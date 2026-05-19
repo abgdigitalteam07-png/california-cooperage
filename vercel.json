@@ -1,0 +1,23 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ],
+  "redirects": [
+    { "source": "/spas/cr1", "destination": "/cr1-hot-tub", "permanent": true },
+    { "source": "/spas/cr2", "destination": "/cr2-hot-tub", "permanent": true },
+    { "source": "/spas/cr3", "destination": "/cr3-hot-tub", "permanent": true }
+  ]
+}
