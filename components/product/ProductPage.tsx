@@ -20,12 +20,12 @@ export default function ProductPage({ product }: { product: Product }) {
         <div className="max-w-[1180px] mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Product image panel */}
-            <div className="bg-[#2C2C2C] rounded-lg p-10 flex items-center justify-center aspect-[4/3]">
-              <div className="text-center">
-                <div className="text-white/10 text-8xl mb-4">〜</div>
-                <p className="text-white/30 font-body text-sm">{p.name} · {p.subtitle}</p>
-                <p className="text-white/15 font-body text-xs">{p.modelCode} · {p.shape}</p>
-              </div>
+            <div className="rounded-lg overflow-hidden">
+              <img
+                src={`/images/${p.key}-hero.jpg`}
+                alt={`California Cooperage ${p.name} ${p.seats}-person ${p.shape} rotomold hot tub`}
+                className="w-full object-cover"
+              />
             </div>
 
             {/* Text block */}

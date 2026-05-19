@@ -48,24 +48,15 @@ export default function HomePage() {
               </div>
             </div>
             <div className="hidden lg:flex items-center justify-center">
-              <div className="relative bg-[#2C2C2C] rounded-lg p-8 w-full max-w-md">
+              <div className="relative w-full max-w-lg">
                 <div className="absolute -top-4 -right-4 bg-[#B8963E] text-white text-xs font-body font-bold px-4 py-2 rounded-sm shadow-lg z-10">
                   ★ Est. 1972 — America&apos;s Original Hot Tub Brand
                 </div>
-                <div className="aspect-[4/3] rounded bg-[#3A3A3A] flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-white/20 text-7xl mb-3">〜</div>
-                    <p className="text-white/40 font-body text-sm">CR2 — The Entertainer</p>
-                    <p className="text-white/20 font-body text-xs">7-Person Square · Flagship</p>
-                  </div>
-                </div>
-                <div className="mt-4 flex gap-2">
-                  {['CR1 · 5-Person', 'CR2 · 7-Person', 'CR3 · 6-Person'].map((m) => (
-                    <div key={m} className="flex-1 bg-[#3A3A3A] rounded px-2 py-1.5 text-center">
-                      <span className="text-[#B8963E] font-body font-bold text-xs">{m}</span>
-                    </div>
-                  ))}
-                </div>
+                <img
+                  src="/images/homepage-hero.jpg"
+                  alt="California Cooperage hot tubs on a backyard deck at sunset"
+                  className="rounded-lg w-full object-cover"
+                />
               </div>
             </div>
           </div>
@@ -143,11 +134,12 @@ export default function HomePage() {
                   {featured && (
                     <div className="bg-[#3A5F35] text-white text-center text-xs font-body font-bold py-1.5 uppercase tracking-widest">★ Flagship Model</div>
                   )}
-                  <div className="aspect-[4/3] bg-[#EDE8DC] flex items-center justify-center group-hover:bg-[#D6E8D2] transition-colors">
-                    <div className="text-center">
-                      <div className="text-[#A89F98] text-5xl mb-2">〜</div>
-                      <p className="text-[#6B6560] font-body text-xs">{p.name} · {p.shape}</p>
-                    </div>
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={`/images/${key}-hero.jpg`}
+                      alt={`California Cooperage ${p.name} ${p.shape} rotomold hot tub`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
                   <div className="p-6">
                     <p className="text-[#A89F98] font-body font-bold text-xs uppercase tracking-widest mb-2">{p.label}</p>
