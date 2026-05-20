@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -8,8 +9,13 @@ export default function Footer() {
           {/* Col 1: Brand */}
           <div className="md:col-span-2 lg:col-span-1">
             <div className="mb-4">
-              <span className="font-display font-bold text-white text-xl tracking-tight block">CALIFORNIA</span>
-              <span className="font-display font-bold text-[#B8963E] text-xl tracking-tight block -mt-1">COOPERAGE</span>
+              <Image
+                src="/logos/california-cooperage-logo-vert-white.png"
+                alt="California Cooperage"
+                width={100}
+                height={66}
+                className="h-14 w-auto"
+              />
             </div>
             <p className="text-sm leading-relaxed mb-4">America&apos;s original hot tub brand since 1972. Rotomold spas for real backyards.</p>
             <p className="text-xs text-white/40">Est. 1972 · California Heritage</p>

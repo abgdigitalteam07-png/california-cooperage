@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 const navLinks = [
@@ -18,17 +19,15 @@ export default function Navbar({ activePage }: { activePage?: string }) {
     <nav className="sticky top-0 z-50 bg-[#1E1E1E] shadow-lg">
       <div className="max-w-[1180px] mx-auto px-6 lg:px-14 flex items-center justify-between h-16">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="flex flex-col leading-none">
-            <span className="font-display font-bold text-white text-lg tracking-tight">CALIFORNIA</span>
-            <span className="font-display font-bold text-[#B8963E] text-lg tracking-tight -mt-1">COOPERAGE</span>
-          </div>
-          <div className="ml-1 w-8 h-8 rounded-full border-2 border-[#3A5F35] flex items-center justify-center">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M3 18 Q8 6 12 12 Q16 18 21 6" stroke="#3A5F35" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-              <path d="M3 14 Q8 4 12 9 Q16 14 21 3" stroke="#B8963E" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-            </svg>
-          </div>
+        <Link href="/" className="shrink-0">
+          <Image
+            src="/logos/california-cooperage-logo-vert-white.png"
+            alt="California Cooperage"
+            width={80}
+            height={52}
+            priority
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Desktop nav */}
