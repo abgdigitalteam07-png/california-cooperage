@@ -12,10 +12,9 @@ export const metadata: Metadata = {
 };
 
 const trustPills = [
-  'Balboa / SpaNet Controls',
+  'Balboa Controls',
   '3KW Heater',
   'Full Foam Insulation',
-  'CE · ETL · ISO 9000',
   'California Heritage Since 1972',
 ];
 
@@ -104,7 +103,7 @@ export default function HomePage() {
                 In 1972, California Cooperage created the first mass-produced redwood hot tub — launching an industry and a California lifestyle movement. Born from the wine country cooperage tradition of the Sonoma Valley, our tubs brought the ritual of communal soaking to everyday American families.
               </p>
               <p className="font-body text-[#6B6560] leading-relaxed mb-5">
-                Over fifty years later, that spirit lives in every California Cooperage spa we build. Today&apos;s lineup uses modern rotational moulding technology — now equipped with industry-standard Balboa or SpaNet control systems, full foam insulation, 3KW heaters, and 2HP two-speed pumps. Real performance. Accessible pricing.
+                Over fifty years later, that spirit lives in every California Cooperage spa we build. Today&apos;s lineup uses modern rotational moulding technology — now equipped with industry-standard Balboa control systems, full foam insulation, 3KW heaters, and 2HP two-speed pumps. Real performance. Accessible pricing.
               </p>
               <p className="font-body text-[#6B6560] leading-relaxed mb-8">
                 Whether it&apos;s five people unwinding in the CR1, seven friends gathering around the CR2, or six under the stars in the round CR3 — there&apos;s a California Cooperage spa for the life you&apos;re living.
@@ -123,7 +122,7 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <p className="text-[#3A5F35] font-body font-bold text-xs uppercase tracking-widest mb-3">The 2026 Lineup</p>
             <h2 className="font-display font-bold text-[#1E1E1E] text-3xl md:text-4xl mb-4">Three Spas. One California Standard.</h2>
-            <p className="font-body text-[#6B6560] text-sm max-w-2xl mx-auto">All models: Balboa/SpaNet controls · 3KW heater · 2HP 2-speed pump · Full foam insulation · CE/ETL/ISO 9000 certified</p>
+            <p className="font-body text-[#6B6560] text-sm max-w-2xl mx-auto">All models: Balboa controls · 3KW heater · 2HP 2-speed pump · Full foam insulation</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {(['cr1', 'cr2', 'cr3'] as const).map((key, i) => {

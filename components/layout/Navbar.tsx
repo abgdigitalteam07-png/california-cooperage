@@ -6,9 +6,9 @@ import { useState } from 'react';
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'CR1 — The Classic', href: '/cr1-hot-tub' },
-  { label: 'CR2 — The Entertainer', href: '/cr2-hot-tub' },
-  { label: 'CR3 — The Social', href: '/cr3-hot-tub' },
+  { label: 'CR1', href: '/cr1-hot-tub' },
+  { label: 'CR2', href: '/cr2-hot-tub' },
+  { label: 'CR3', href: '/cr3-hot-tub' },
   { label: 'Warranty & Docs', href: '/warranty' },
 ];
 

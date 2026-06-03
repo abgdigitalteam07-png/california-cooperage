@@ -64,7 +64,7 @@ export default function ProductPage({ product }: { product: Product }) {
       {/* Specs Table */}
       <section className="bg-white py-20 px-6">
         <div className="max-w-[1180px] mx-auto">
-          <p className="text-[#3A5F35] font-body font-bold text-xs uppercase tracking-widest mb-3">Technical Specifications — Confirmed from sunspa.cn</p>
+          <p className="text-[#3A5F35] font-body font-bold text-xs uppercase tracking-widest mb-3">Technical Specifications</p>
           <h2 className="font-display font-bold text-[#1E1E1E] text-3xl mb-10">{p.name} Specifications</h2>
 
           <div className="max-w-[880px]">
@@ -77,17 +77,8 @@ export default function ProductPage({ product }: { product: Product }) {
               ))}
             </div>
 
-            {/* Certifications */}
-            <div className="mt-6 flex flex-wrap gap-2">
-              {['CE', 'ETL', 'RoHS', 'SAA', 'ISO 9000'].map((cert) => (
-                <span key={cert} className="px-3 py-1.5 bg-[#D6E8D2] text-[#3A5F35] font-body font-bold text-xs rounded">
-                  {cert}
-                </span>
-              ))}
-            </div>
-
             {/* Optional upgrades */}
-            <p className="mt-4 text-[#6B6560] font-body text-sm">
+            <p className="mt-6 text-[#6B6560] font-body text-sm">
               <strong className="text-[#1E1E1E]">Optional Upgrades:</strong> Steps · Wi-Fi module · Mini LED · Waterfall
             </p>
 
@@ -114,7 +105,7 @@ export default function ProductPage({ product }: { product: Product }) {
                   <li>✓ Panoramic views from every seat</li>
                   <li>✓ Distinctive backyard focal point</li>
                   <li>✓ No corner dead zones</li>
-                  <li>✓ ⌀203cm — fits most patio spaces</li>
+                  <li>✓ ⌀81″ — fits most patio spaces</li>
                 </ul>
               </div>
               <div className="bg-white rounded-lg p-6 border border-[#EDE8DC]">
@@ -137,7 +128,7 @@ export default function ProductPage({ product }: { product: Product }) {
         <section className="bg-[#FDEAEA] py-6 px-6">
           <div className="max-w-[1180px] mx-auto">
             <p className="font-body text-[#C0392B] font-bold text-sm">
-              ⚠️ <strong>Site Preparation Note:</strong> The CR2 weighs approximately 1,100 kg (2,425 lbs) when filled. Ensure the installation surface can support this load. Consult a structural engineer or contractor before installation.
+              ⚠️ <strong>Site Preparation Note:</strong> The CR2 weighs approximately 2,425 lbs (1,100 kg) when filled. Ensure the installation surface can support this load. Consult a structural engineer or contractor before installation.
             </p>
           </div>
         </section>

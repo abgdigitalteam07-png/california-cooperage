@@ -25,9 +25,9 @@ export default function Footer() {
           <div>
             <h4 className="font-body font-bold text-white text-xs uppercase tracking-widest mb-4">Our Spas</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/cr1-hot-tub" className="hover:text-white transition-colors">CR1 — The Classic</Link></li>
-              <li><Link href="/cr2-hot-tub" className="hover:text-white transition-colors">CR2 — The Entertainer</Link></li>
-              <li><Link href="/cr3-hot-tub" className="hover:text-white transition-colors">CR3 — The Social</Link></li>
+              <li><Link href="/cr1-hot-tub" className="hover:text-white transition-colors">CR1</Link></li>
+              <li><Link href="/cr2-hot-tub" className="hover:text-white transition-colors">CR2</Link></li>
+              <li><Link href="/cr3-hot-tub" className="hover:text-white transition-colors">CR3</Link></li>
             </ul>
           </div>
 

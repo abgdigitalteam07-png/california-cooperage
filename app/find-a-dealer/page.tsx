@@ -9,8 +9,7 @@ export const metadata: Metadata = {
 };
 
 const trustSignals = [
-  { icon: '⊕', text: 'Balboa / SpaNet — Industry Standard Controls' },
-  { icon: '⛨', text: 'CE · ETL · ISO 9000 Certified' },
+  { icon: '⊕', text: 'Balboa — Industry Standard Controls' },
   { icon: '◷', text: 'Full Foam Insulation + 3KW Heater on All Models' },
   { icon: '★', text: 'California Heritage Since 1972' },
 ];
@@ -64,9 +63,9 @@ export default function FindADealerPage() {
               </div>
 
               <div className="mt-6 bg-[#D6E8D2] rounded-lg p-6">
-                <p className="font-body font-bold text-[#3A5F35] text-xs uppercase tracking-widest mb-2">Manufactured by</p>
-                <p className="font-body text-[#1E1E1E] font-bold">Nantong Bestview Spa Co., Ltd.</p>
-                <p className="font-body text-[#6B6560] text-xs mt-1">CE · ETL · RoHS · SAA · ISO 9000 · Est. 2003</p>
+                <p className="font-body font-bold text-[#3A5F35] text-xs uppercase tracking-widest mb-2">Built to California Standards</p>
+                <p className="font-body text-[#1E1E1E] font-bold">California Cooperage</p>
+                <p className="font-body text-[#6B6560] text-xs mt-1">America&apos;s Original Hot Tub Brand · Est. 1972</p>
               </div>
             </div>
           </div>

@@ -8,16 +8,16 @@ import { WARRANTY_FAQS } from '@/lib/products';
 
 export const metadata: Metadata = {
   title: 'Warranty & Owner Resources | California Cooperage Hot Tubs',
-  description: 'Access California Cooperage warranty information, owner manuals, electrical guides, and Balboa/SpaNet controls documentation for the CR1, CR2, and CR3 rotomold spas.',
+  description: 'Access California Cooperage warranty information, owner manuals, electrical guides, and Balboa controls documentation for the CR1, CR2, and CR3 rotomold spas.',
 };
 
 const docs = [
-  { title: 'CR1 Owner\'s Manual', scope: 'RTO1700MD — 5-Person Rectangular', href: '/cr1-hot-tub' },
-  { title: 'CR2 Owner\'s Manual', scope: 'RTO2000MD — 7-Person Square', href: '/cr2-hot-tub' },
-  { title: 'CR3 Owner\'s Manual', scope: 'RTO2100MD — 6-Person Round', href: '/cr3-hot-tub' },
+  { title: 'CR1 Owner\'s Manual', scope: '5-Person Rectangular', href: '/cr1-hot-tub' },
+  { title: 'CR2 Owner\'s Manual', scope: '7-Person Square — Flagship', href: '/cr2-hot-tub' },
+  { title: 'CR3 Owner\'s Manual', scope: '6-Person Round', href: '/cr3-hot-tub' },
   { title: 'Electrical Installation Guide', scope: 'All Models', href: '#' },
   { title: 'Water Care & Chemistry Guide', scope: 'All Models', href: '#' },
-  { title: 'Balboa / SpaNet Controls Guide', scope: 'All Models', href: '#' },
+  { title: 'Balboa Controls Guide', scope: 'All Models', href: '#' },
 ];
 
 export default function WarrantyPage() {
@@ -47,8 +47,8 @@ export default function WarrantyPage() {
 
           <div className="grid md:grid-cols-3 gap-6 mb-10">
             {[
-              { years: '3', title: 'Shell & Cabinet', body: 'LLDPE rotomold shell and PE/PS cabinet covered against defects in materials and workmanship under normal use.' },
-              { years: '2', title: 'Equipment', body: 'Balboa/SpaNet control system, 3KW heater, and 2HP pump covered against manufacturing defects.' },
+              { years: '3', title: 'Shell & Cabinet', body: 'HDPE rotomold shell and PE/PS cabinet covered against defects in materials and workmanship under normal use.' },
+              { years: '2', title: 'Equipment', body: 'Balboa control system, 3KW heater, and 2HP pump covered against manufacturing defects.' },
               { years: '1', title: 'Labor', body: 'Authorized labor coverage for warranty repairs performed by an authorized California Cooperage service provider.' },
             ].map((card) => (
               <div key={card.title} className="bg-[#F8F4EC] rounded-lg p-8 text-center border border-[#EDE8DC]">
@@ -96,7 +96,7 @@ export default function WarrantyPage() {
         <div className="max-w-[1180px] mx-auto">
           <p className="text-[#3A5F35] font-body font-bold text-xs uppercase tracking-widest mb-3">Electrical Reference</p>
           <h2 className="font-display font-bold text-[#1E1E1E] text-3xl mb-3">Electrical Requirements — All Models</h2>
-          <p className="font-body text-[#6B6560] text-sm mb-8">Specifications per Nantong Bestview Spa Co., Ltd. Confirm North American configuration with your dealer.</p>
+          <p className="font-body text-[#6B6560] text-sm mb-8">Specifications per manufacturer. Confirm North American configuration with your dealer.</p>
 
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-sm font-body">
@@ -112,9 +112,9 @@ export default function WarrantyPage() {
               </thead>
               <tbody>
                 {[
-                  ['CR1 — RTO1700MD', '220–240V', '50Hz', '16/32A', 'Balboa / SpaNet', '3 kW'],
-                  ['CR2 — RTO2000MD', '220–240V', '50Hz', '16/32A', 'Balboa / SpaNet', '3 kW'],
-                  ['CR3 — RTO2100MD', '220–240V', '50Hz', '16/32A', 'Balboa / SpaNet', '3 kW'],
+                  ['CR1', '220–240V', '50Hz', '16/32A', 'Balboa', '3 kW'],
+                  ['CR2', '220–240V', '50Hz', '16/32A', 'Balboa', '3 kW'],
+                  ['CR3', '220–240V', '50Hz', '16/32A', 'Balboa', '3 kW'],
                 ].map((row, i) => (
                   <tr key={i} className={i % 2 === 0 ? 'bg-[#F8F4EC]' : 'bg-white'}>
                     {row.map((cell, j) => (
@@ -149,9 +149,9 @@ export default function WarrantyPage() {
           <p className="text-[#3A5F35] font-body font-bold text-xs uppercase tracking-widest mb-6">Explore the Lineup</p>
           <div className="flex flex-wrap justify-center gap-4">
             {[
-              { label: 'CR1 — The Classic', href: '/cr1-hot-tub' },
-              { label: 'CR2 — The Entertainer', href: '/cr2-hot-tub' },
-              { label: 'CR3 — The Social', href: '/cr3-hot-tub' },
+              { label: 'CR1', href: '/cr1-hot-tub' },
+              { label: 'CR2', href: '/cr2-hot-tub' },
+              { label: 'CR3', href: '/cr3-hot-tub' },
               { label: 'Back to Home', href: '/' },
             ].map((link) => (
               <Link key={link.href} href={link.href} className="px-6 py-2.5 border-2 border-[#3A5F35] text-[#3A5F35] font-body font-bold text-sm rounded-sm hover:bg-[#3A5F35] hover:text-white transition-colors">

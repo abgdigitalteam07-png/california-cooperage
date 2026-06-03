@@ -72,9 +72,9 @@ export default function DealerForm() {
           className={inputClass}
         >
           <option value="">Select a model...</option>
-          <option value="CR1">CR1 — The Classic (5-Person Rectangular)</option>
-          <option value="CR2">CR2 — The Entertainer (7-Person Square)</option>
-          <option value="CR3">CR3 — The Social (6-Person Round)</option>
+          <option value="CR1">CR1 — 5-Person Rectangular</option>
+          <option value="CR2">CR2 — 7-Person Square (Flagship)</option>
+          <option value="CR3">CR3 — 6-Person Round</option>
           <option value="unsure">Not sure — need guidance</option>
         </select>
       </div>
