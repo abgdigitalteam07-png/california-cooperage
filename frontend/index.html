@@ -473,12 +473,16 @@
     }
     .product-img-area {
       background: var(--beige);
-      height: 200px;
+      width: 100%;
+      aspect-ratio: 5 / 4;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
+      overflow: hidden;
     }
+    .product-img-area picture { display: block; width: 100%; height: 100%; }
+    .product-img-area picture img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .product-img-label {
       font-family: var(--font-head);
       font-weight: 800;
@@ -500,6 +504,7 @@
       text-transform: uppercase;
       padding: 4px 10px;
       border-radius: 50px;
+      white-space: nowrap;
     }
     .product-body { padding: 24px; }
     .product-name {
