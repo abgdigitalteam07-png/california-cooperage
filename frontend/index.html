@@ -857,6 +857,49 @@
     }
     .compare-link:hover { background: var(--blue); color: var(--white); border-color: var(--blue); }
 
+    /* ─── COMPARE SPECS TABLE ────────────────────────────── */
+    .compare-specs-section { padding: 60px 24px; background: var(--white); }
+    .compare-specs-inner { max-width: 1200px; margin: 0 auto; }
+    .compare-specs-header { text-align: center; margin-bottom: 32px; }
+    .compare-specs-wrap { overflow-x: auto; border: 1px solid rgba(28,74,99,0.12); border-radius: 10px; }
+    .compare-specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      min-width: 640px;
+    }
+    .compare-specs-table th,
+    .compare-specs-table td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid rgba(28,74,99,0.08);
+      vertical-align: middle;
+    }
+    .compare-specs-table thead th {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(28,74,99,0.04);
+      text-align: center;
+    }
+    .compare-specs-table thead th:first-child { text-align: left; }
+    .compare-specs-table tbody td { text-align: center; color: rgba(26,26,26,0.85); }
+    .compare-specs-table tbody td:first-child {
+      text-align: left;
+      font-family: var(--font-head);
+      font-weight: 600;
+      color: rgba(26,26,26,0.65);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .compare-specs-table .col-current { background: rgba(239,183,100,0.10); }
+    .compare-specs-table thead th.col-current { background: rgba(239,183,100,0.22); color: var(--blue); }
+    .compare-specs-table tbody tr:last-child td { border-bottom: none; }
+
     /* ─── WARNING BOX ────────────────────────────────────── */
     .warning-box {
       background: rgba(239,183,100,0.12);
@@ -1348,7 +1391,7 @@
             <span class="flagship-badge">Flagship</span>
           </div>
           <div class="product-body">
-            <div class="product-name">CR2 — Flagship</div>
+            <div class="product-name">CR2</div>
             <p class="product-tagline">Seven seats. The one that owns the backyard.</p>
             <div class="product-chips">
               <span class="chip">7 Person</span>
@@ -1607,6 +1650,38 @@
     </div>
   </section>
 
+  <section class="compare-specs-section" aria-label="Compare CR1, CR2, CR3 specifications">
+    <div class="compare-specs-inner">
+      <div class="compare-specs-header">
+        <span class="eyebrow">Side-by-Side</span>
+        <h2 style="color:var(--blue);font-size:clamp(1.4rem,2vw,1.9rem);margin-top:6px;">How CR1 Compares</h2>
+      </div>
+      <div class="compare-specs-wrap">
+        <table class="compare-specs-table">
+          <thead>
+            <tr>
+              <th>Spec</th>
+              <th class="col-current">CR1</th>
+              <th>CR2</th>
+              <th>CR3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Seating</td><td class="col-current">5 Persons</td><td>7 Persons</td><td>6 Persons</td></tr>
+            <tr><td>Shape</td><td class="col-current">Rectangular</td><td>Square</td><td>Round</td></tr>
+            <tr><td>Dimensions</td><td class="col-current">68" × 59" × 30"</td><td>81" × 81" × 32"</td><td>⌀81" × 32"</td></tr>
+            <tr><td>Total Jets</td><td class="col-current">14</td><td>25</td><td>21</td></tr>
+            <tr><td>Heater</td><td class="col-current">3 kW</td><td>3 kW</td><td>3 kW</td></tr>
+            <tr><td>Controls</td><td class="col-current">Balboa</td><td>Balboa</td><td>Balboa</td></tr>
+            <tr><td>Dry Weight</td><td class="col-current">~364 lbs</td><td>~972 lbs</td><td>~529 lbs</td></tr>
+            <tr><td>Filled Weight</td><td class="col-current">~1,830 lbs</td><td>~2,425 lbs</td><td>~2,293 lbs</td></tr>
+            <tr><td>Insulation</td><td class="col-current">Full Foam</td><td>Full Foam</td><td>Full Foam</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <div class="compare-bar" aria-label="Compare other models">
     <div class="compare-bar-inner">
       <span class="compare-label">Compare:</span>
@@ -1631,11 +1706,11 @@
         <span class="eyebrow" style="color:rgba(255,255,255,0.55);margin-bottom:0">The CR Series</span>
         <span style="background:var(--yellow);color:var(--black);font-family:var(--font-head);font-weight:700;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:50px;">Flagship</span>
       </div>
-      <h1>CR2 — Flagship</h1>
+      <h1>CR2</h1>
       <p class="tagline">Seven Seats. The Spa that Owns the Backyard.</p>
       <div class="spec-chips-row">
         <span class="spec-chip">7 Person</span>
-        <span class="spec-chip">Square 81"</span>
+        <span class="spec-chip">Square 81" × 81"</span>
         <span class="spec-chip">25 Jets</span>
         <span class="spec-chip">2 Pillows</span>
         <span class="spec-chip">3KW Heater</span>
@@ -1706,6 +1781,38 @@
     </div>
   </section>
 
+  <section class="compare-specs-section" aria-label="Compare CR1, CR2, CR3 specifications">
+    <div class="compare-specs-inner">
+      <div class="compare-specs-header">
+        <span class="eyebrow">Side-by-Side</span>
+        <h2 style="color:var(--blue);font-size:clamp(1.4rem,2vw,1.9rem);margin-top:6px;">How CR2 Compares</h2>
+      </div>
+      <div class="compare-specs-wrap">
+        <table class="compare-specs-table">
+          <thead>
+            <tr>
+              <th>Spec</th>
+              <th>CR1</th>
+              <th class="col-current">CR2</th>
+              <th>CR3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Seating</td><td>5 Persons</td><td class="col-current">7 Persons</td><td>6 Persons</td></tr>
+            <tr><td>Shape</td><td>Rectangular</td><td class="col-current">Square</td><td>Round</td></tr>
+            <tr><td>Dimensions</td><td>68" × 59" × 30"</td><td class="col-current">81" × 81" × 32"</td><td>⌀81" × 32"</td></tr>
+            <tr><td>Total Jets</td><td>14</td><td class="col-current">25</td><td>21</td></tr>
+            <tr><td>Heater</td><td>3 kW</td><td class="col-current">3 kW</td><td>3 kW</td></tr>
+            <tr><td>Controls</td><td>Balboa</td><td class="col-current">Balboa</td><td>Balboa</td></tr>
+            <tr><td>Dry Weight</td><td>~364 lbs</td><td class="col-current">~972 lbs</td><td>~529 lbs</td></tr>
+            <tr><td>Filled Weight</td><td>~1,830 lbs</td><td class="col-current">~2,425 lbs</td><td>~2,293 lbs</td></tr>
+            <tr><td>Insulation</td><td>Full Foam</td><td class="col-current">Full Foam</td><td>Full Foam</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <div class="compare-bar" aria-label="Compare other models">
     <div class="compare-bar-inner">
       <span class="compare-label">Compare:</span>
@@ -1734,7 +1841,7 @@
         <span class="spec-chip">Round ⌀81"</span>
         <span class="spec-chip">21 Jets</span>
         <span class="spec-chip">3KW Heater</span>
-        <span class="spec-chip">Balboa</span>
+        <span class="spec-chip">Balboa Controls</span>
         <span class="spec-chip">Full Foam</span>
       </div>
     </div>
@@ -1802,6 +1909,38 @@
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12"/><path d="M12 6v6l4 2"/></svg></div><div class="feature-name">3KW Heater + Full Foam</div></div>
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="feature-name">Seamless Rotomold Shell</div></div>
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="feature-name">California Heritage</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare-specs-section" aria-label="Compare CR1, CR2, CR3 specifications">
+    <div class="compare-specs-inner">
+      <div class="compare-specs-header">
+        <span class="eyebrow">Side-by-Side</span>
+        <h2 style="color:var(--blue);font-size:clamp(1.4rem,2vw,1.9rem);margin-top:6px;">How CR3 Compares</h2>
+      </div>
+      <div class="compare-specs-wrap">
+        <table class="compare-specs-table">
+          <thead>
+            <tr>
+              <th>Spec</th>
+              <th>CR1</th>
+              <th>CR2</th>
+              <th class="col-current">CR3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Seating</td><td>5 Persons</td><td>7 Persons</td><td class="col-current">6 Persons</td></tr>
+            <tr><td>Shape</td><td>Rectangular</td><td>Square</td><td class="col-current">Round</td></tr>
+            <tr><td>Dimensions</td><td>68" × 59" × 30"</td><td>81" × 81" × 32"</td><td class="col-current">⌀81" × 32"</td></tr>
+            <tr><td>Total Jets</td><td>14</td><td>25</td><td class="col-current">21</td></tr>
+            <tr><td>Heater</td><td>3 kW</td><td>3 kW</td><td class="col-current">3 kW</td></tr>
+            <tr><td>Controls</td><td>Balboa</td><td>Balboa</td><td class="col-current">Balboa</td></tr>
+            <tr><td>Dry Weight</td><td>~364 lbs</td><td>~972 lbs</td><td class="col-current">~529 lbs</td></tr>
+            <tr><td>Filled Weight</td><td>~1,830 lbs</td><td>~2,425 lbs</td><td class="col-current">~2,293 lbs</td></tr>
+            <tr><td>Insulation</td><td>Full Foam</td><td>Full Foam</td><td class="col-current">Full Foam</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -1954,7 +2093,7 @@
                 <select class="form-select" id="dealer-model" name="model">
                   <option value="">Not Sure Yet</option>
                   <option value="cr1">CR1</option>
-                  <option value="cr2">CR2 — Flagship</option>
+                  <option value="cr2">CR2</option>
                   <option value="cr3">CR3</option>
                 </select>
               </div>
@@ -2024,7 +2163,7 @@
         <div class="footer-col-title">Our Spas</div>
         <ul class="footer-links" role="list">
           <li><a onclick="showPage('cr1')" tabindex="0" role="button">CR1</a></li>
-          <li><a onclick="showPage('cr2')" tabindex="0" role="button">CR2 — Flagship</a></li>
+          <li><a onclick="showPage('cr2')" tabindex="0" role="button">CR2</a></li>
           <li><a onclick="showPage('cr3')" tabindex="0" role="button">CR3</a></li>
         </ul>
       </div>
