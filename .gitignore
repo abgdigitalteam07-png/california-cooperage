@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# heavy / redundant asset archives — keep extracted compressed copies in public/models and prototype/cc-assets instead
+/public/products/wetransfer_*.zip
+/public/products/wetransfer_*/
+/prototype/california-cooperage-prototype.zip

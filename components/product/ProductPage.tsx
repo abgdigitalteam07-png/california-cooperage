@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer';
 import CTABand from '@/components/shared/CTABand';
 import ElectricalNotice from '@/components/shared/ElectricalNotice';
 import CompareBar from '@/components/product/CompareBar';
+import Hero3DViewer from '@/components/product/Hero3DViewer';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import { Product } from '@/lib/products';
 
@@ -19,14 +20,11 @@ export default function ProductPage({ product }: { product: Product }) {
       <section className="bg-[#1E1E1E] py-16 px-6">
         <div className="max-w-[1180px] mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Product image panel */}
-            <div className="rounded-lg overflow-hidden">
-              <img
-                src={`/images/${p.key}-hero.jpg`}
-                alt={`California Cooperage ${p.name} ${p.seats}-person ${p.shape} rotomold hot tub`}
-                className="w-full object-cover"
-              />
-            </div>
+            {/* Interactive 3D viewer */}
+            <Hero3DViewer
+              src={p.model}
+              alt={`Interactive 3D model of the California Cooperage ${p.name} ${p.seats}-person ${p.shape} rotomold hot tub`}
+            />
 
             {/* Text block */}
             <div>

@@ -36,6 +36,7 @@ export interface Product {
   faqs: FAQ[];
   compareWith: ProductKey[];
   image: string;
+  model: string;
   metaTitle: string;
   metaDescription: string;
 }
@@ -89,6 +90,7 @@ export const PRODUCTS: Record<ProductKey, Product> = {
     ],
     compareWith: ['cr2', 'cr3'],
     image: '/images/cr1-hero.jpg',
+    model: '/models/cr1.glb',
     metaTitle: 'CR1 Hot Tub — 5-Person Rectangular Rotomold Spa | California Cooperage',
     metaDescription: 'The CR1 is California Cooperage\'s 5-person rectangular rotomold hot tub — 14 jets, Balboa controls, 3KW heater, full foam insulation. 68″ × 59″ × 30″ compact footprint.',
   },
@@ -142,6 +144,7 @@ export const PRODUCTS: Record<ProductKey, Product> = {
     ],
     compareWith: ['cr1', 'cr3'],
     image: '/images/cr2-hero.jpg',
+    model: '/models/cr2.glb',
     metaTitle: 'CR2 Hot Tub — 7-Person Square Rotomold Spa | California Cooperage',
     metaDescription: 'The CR2 is California Cooperage\'s flagship 7-person square rotomold spa — 25 jets, 2 headrest pillows, Balboa controls, 3KW heater. 81″ × 81″ × 32″ full square footprint.',
   },
@@ -193,6 +196,7 @@ export const PRODUCTS: Record<ProductKey, Product> = {
     ],
     compareWith: ['cr1', 'cr2'],
     image: '/images/cr3-hero.jpg',
+    model: '/models/cr3.glb',
     metaTitle: 'CR3 Hot Tub — 6-Person Round Rotomold Spa | California Cooperage',
     metaDescription: 'The CR3 is California Cooperage\'s 6-person round rotomold spa — 21 jets, Balboa controls, 3KW heater, ⌀81″ × 32″ circular footprint. The most social spa in the lineup.',
   },
