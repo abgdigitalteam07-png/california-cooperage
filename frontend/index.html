@@ -711,6 +711,71 @@
       position: relative;
       overflow: hidden;
     }
+    /* ─── 3D MODEL VIEWER ────────────────────────────────── */
+    .product-image-block model-viewer {
+      outline: none;
+    }
+    .product-image-block model-viewer:focus,
+    .product-image-block model-viewer:focus-visible {
+      outline: none;
+    }
+    .viewer-hint {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      background: rgba(28, 74, 99, 0.92);
+      color: #fff;
+      padding: 8px 14px 8px 10px;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      animation: hintBreathe 2.6s ease-in-out infinite;
+      z-index: 2;
+      will-change: opacity, transform;
+    }
+    .viewer-hint .hint-icon {
+      width: 16px;
+      height: 16px;
+      animation: hintSpin 3.4s linear infinite;
+      transform-origin: 50% 50%;
+    }
+    .viewer-hint.dismissed {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: none;
+    }
+    @keyframes hintBreathe {
+      0%, 100% { box-shadow: 0 4px 14px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.08) inset; }
+      50%      { box-shadow: 0 6px 22px rgba(184,150,62,0.42), 0 0 0 1px rgba(255,255,255,0.16) inset; }
+    }
+    @keyframes hintSpin {
+      to { transform: rotate(360deg); }
+    }
+    @media (max-width: 480px) {
+      .viewer-hint {
+        bottom: 10px;
+        right: 10px;
+        padding: 6px 11px 6px 8px;
+        font-size: 10.5px;
+        gap: 6px;
+      }
+      .viewer-hint .hint-icon { width: 13px; height: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .viewer-hint { animation: none; }
+      .viewer-hint .hint-icon { animation: none; }
+    }
     .product-image-label {
       font-family: var(--font-head);
       font-weight: 800;
@@ -1263,6 +1328,7 @@
       .container { padding: 0 16px; }
     }
   </style>
+  <script type="module" src="https://unpkg.com/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
 </head>
 <body>
 
@@ -1546,10 +1612,32 @@
       <div class="product-detail-grid">
         <div>
           <div class="product-image-block" aria-label="CR1 hot tub">
-            <picture>
-              <source media="(min-width: 768px)" srcset="cc-assets/cr1-hero.webp" />
-              <img src="cc-assets/cr1-mobile.webp" alt="CR1 hot tub" style="width:100%;height:auto;display:block;" />
-            </picture>
+            <model-viewer
+              src="cc-assets/cr1.glb"
+              alt="Interactive 3D model of the CR1 hot tub"
+              poster="cc-assets/cr1-hero.webp"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              rotation-per-second="20deg"
+              bounds="tight"
+              camera-orbit="20deg 70deg 100%"
+              min-camera-orbit="auto auto 40%"
+              max-camera-orbit="auto auto 200%"
+              interaction-prompt="auto"
+              interaction-prompt-style="basic"
+              interaction-prompt-threshold="1500"
+              shadow-intensity="1.4"
+              exposure="1.1"
+              style="width:100%;height:100%;min-height:420px;background:#F7F4EE;display:block;border-radius:10px;"
+            ></model-viewer>
+            <div class="viewer-hint" aria-hidden="true">
+              <svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/>
+                <polyline points="20.5 4 20.5 9 15.5 9"/>
+              </svg>
+              <span>Drag to rotate</span>
+            </div>
           </div>
         </div>
         <div>
@@ -1729,10 +1817,32 @@
       <div class="product-detail-grid">
         <div>
           <div class="product-image-block" aria-label="CR2 hot tub">
-            <picture>
-              <source media="(min-width: 768px)" srcset="cc-assets/cr2-hero.webp" />
-              <img src="cc-assets/cr2-mobile.webp" alt="CR2 hot tub" style="width:100%;height:auto;display:block;" />
-            </picture>
+            <model-viewer
+              src="cc-assets/cr2.glb"
+              alt="Interactive 3D model of the CR2 hot tub"
+              poster="cc-assets/cr2-hero.webp"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              rotation-per-second="20deg"
+              bounds="tight"
+              camera-orbit="20deg 70deg 100%"
+              min-camera-orbit="auto auto 40%"
+              max-camera-orbit="auto auto 200%"
+              interaction-prompt="auto"
+              interaction-prompt-style="basic"
+              interaction-prompt-threshold="1500"
+              shadow-intensity="1.4"
+              exposure="1.1"
+              style="width:100%;height:100%;min-height:420px;background:#F7F4EE;display:block;border-radius:10px;"
+            ></model-viewer>
+            <div class="viewer-hint" aria-hidden="true">
+              <svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/>
+                <polyline points="20.5 4 20.5 9 15.5 9"/>
+              </svg>
+              <span>Drag to rotate</span>
+            </div>
           </div>
           <div class="warning-box" role="alert">
             <span class="warn-icon" aria-hidden="true">
@@ -1857,10 +1967,32 @@
       <div class="product-detail-grid">
         <div>
           <div class="product-image-block" aria-label="CR3 hot tub">
-            <picture>
-              <source media="(min-width: 768px)" srcset="cc-assets/cr3-hero.webp" />
-              <img src="cc-assets/cr3-mobile.webp" alt="CR3 hot tub" style="width:100%;height:auto;display:block;" />
-            </picture>
+            <model-viewer
+              src="cc-assets/cr3.glb"
+              alt="Interactive 3D model of the CR3 hot tub"
+              poster="cc-assets/cr3-hero.webp"
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="2000"
+              rotation-per-second="20deg"
+              bounds="tight"
+              camera-orbit="20deg 70deg 100%"
+              min-camera-orbit="auto auto 40%"
+              max-camera-orbit="auto auto 200%"
+              interaction-prompt="auto"
+              interaction-prompt-style="basic"
+              interaction-prompt-threshold="1500"
+              shadow-intensity="1.4"
+              exposure="1.1"
+              style="width:100%;height:100%;min-height:420px;background:#F7F4EE;display:block;border-radius:10px;"
+            ></model-viewer>
+            <div class="viewer-hint" aria-hidden="true">
+              <svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/>
+                <polyline points="20.5 4 20.5 9 15.5 9"/>
+              </svg>
+              <span>Drag to rotate</span>
+            </div>
           </div>
           <div class="shape-guide" aria-label="Shape comparison guide">
             <div class="shape-option">
@@ -2287,6 +2419,33 @@
       }
     });
   });
+
+  // Smart hint-chip dismissal: vanish on real user interaction, then stay gone for this session.
+  (function () {
+    var SESSION_KEY = 'cc_viewer_hint_seen';
+    var alreadySeen = false;
+    try { alreadySeen = sessionStorage.getItem(SESSION_KEY) === '1'; } catch (e) {}
+
+    function dismissAllHints() {
+      document.querySelectorAll('.viewer-hint').forEach(function (h) {
+        h.classList.add('dismissed');
+      });
+      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+    }
+
+    if (alreadySeen) {
+      // Already dismissed this session — don't show the chip again on subsequent product pages.
+      dismissAllHints();
+      return;
+    }
+
+    document.querySelectorAll('model-viewer').forEach(function (mv) {
+      var dismiss = function () { dismissAllHints(); };
+      mv.addEventListener('pointerdown', dismiss, { once: true });
+      mv.addEventListener('wheel',       dismiss, { once: true, passive: true });
+      mv.addEventListener('touchstart',  dismiss, { once: true, passive: true });
+    });
+  })();
 </script>
 
 </body>
