@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
   <title>California Cooperage — California's Original Hot Tub Since 1972</title>
   <link rel="icon" type="image/png" sizes="32x32" href="cc-assets/california-cooperage-icon-color.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="cc-assets/california-cooperage-icon-color.png" />
@@ -778,6 +777,57 @@
     @media (prefers-reduced-motion: reduce) {
       .viewer-hint { animation: none; }
       .viewer-hint .hint-icon { animation: none; }
+    }
+    /* 360° one-shot rotation button — sits in top-right of the viewer */
+    .viewer-360-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 13px 8px 10px;
+      background: rgba(28, 74, 99, 0.92);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      z-index: 3;
+    }
+    .viewer-360-btn:hover {
+      background: rgba(184, 150, 62, 0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(184, 150, 62, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.18) inset;
+    }
+    .viewer-360-btn:active { transform: translateY(0); }
+    .viewer-360-btn .rotate-icon {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.3s ease;
+    }
+    .viewer-360-btn.spinning .rotate-icon { animation: spin360 10s ease-in-out; }
+    @keyframes spin360 { to { transform: rotate(360deg); } }
+    @media (max-width: 480px) {
+      .viewer-360-btn {
+        top: 10px;
+        right: 10px;
+        padding: 6px 10px 6px 8px;
+        font-size: 10.5px;
+        gap: 5px;
+      }
+      .viewer-360-btn .rotate-icon { width: 12px; height: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .viewer-360-btn.spinning .rotate-icon { animation: none; }
     }
     .product-image-label {
       font-family: var(--font-head);
@@ -1640,6 +1690,13 @@
               </svg>
               <span>Drag to rotate</span>
             </div>
+            <button type="button" class="viewer-360-btn" aria-label="Auto-rotate the model 360 degrees">
+              <svg class="rotate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                <polyline points="3 4 3 10 9 10"/>
+              </svg>
+              <span>360°</span>
+            </button>
           </div>
         </div>
         <div>
@@ -1844,6 +1901,13 @@
               </svg>
               <span>Drag to rotate</span>
             </div>
+            <button type="button" class="viewer-360-btn" aria-label="Auto-rotate the model 360 degrees">
+              <svg class="rotate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                <polyline points="3 4 3 10 9 10"/>
+              </svg>
+              <span>360°</span>
+            </button>
           </div>
           <div class="warning-box" role="alert">
             <span class="warn-icon" aria-hidden="true">
@@ -1993,6 +2057,13 @@
               </svg>
               <span>Drag to rotate</span>
             </div>
+            <button type="button" class="viewer-360-btn" aria-label="Auto-rotate the model 360 degrees">
+              <svg class="rotate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                <polyline points="3 4 3 10 9 10"/>
+              </svg>
+              <span>360°</span>
+            </button>
           </div>
           <div class="shape-guide" aria-label="Shape comparison guide">
             <div class="shape-option">
@@ -2444,6 +2515,81 @@
       mv.addEventListener('pointerdown', dismiss, { once: true });
       mv.addEventListener('wheel',       dismiss, { once: true, passive: true });
       mv.addEventListener('touchstart',  dismiss, { once: true, passive: true });
+    });
+  })();
+
+  // 360° button → cinematic showcase: full revolution + vertical tilt sweep so
+  // the viewer sees the model from above, side, and below over the duration.
+  (function () {
+    var TWO_PI = 2 * Math.PI;
+
+    document.querySelectorAll('.viewer-360-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var block = btn.closest('.product-image-block');
+        if (!block) return;
+        var mv = block.querySelector('model-viewer');
+        if (!mv || btn.classList.contains('spinning')) return;
+
+        btn.classList.add('spinning');
+        var wasAutoRotating = mv.autoRotate;
+        mv.autoRotate = false;
+
+        var startOrbit = mv.getCameraOrbit();
+        var startTheta  = startOrbit.theta;
+        var startPhi    = startOrbit.phi;
+        var startRadius = startOrbit.radius;
+
+        var duration = 10000;  // 10s — slow, cinematic showcase
+        var startTime = performance.now();
+
+        function frame(now) {
+          var t = Math.min((now - startTime) / duration, 1);
+
+          // Smooth ease-in-out for the spin so it doesn't feel mechanical.
+          var ease = t < 0.5
+            ? 2 * t * t
+            : 1 - Math.pow(-2 * t + 2, 2) / 2;
+          var theta = startTheta + TWO_PI * ease;
+
+          // Phi oscillates so the camera tilts during the spin:
+          //  t=0.00 → start angle
+          //  t=0.25 → tilted up (looking down into the tub)
+          //  t=0.50 → back to start
+          //  t=0.75 → tilted down (looking up at the tub)
+          //  t=1.00 → exactly back to start
+          var phiOffset = Math.sin(t * TWO_PI) * 0.45;  // ±26°
+          var phi = startPhi + phiOffset;
+
+          // Safety clamp to keep phi inside model-viewer's valid range.
+          phi = Math.max(0.15, Math.min(Math.PI - 0.15, phi));
+
+          mv.cameraOrbit =
+            theta.toFixed(4) + 'rad ' +
+            phi.toFixed(4)   + 'rad ' +
+            startRadius      + 'm';
+
+          if (t < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            // Snap back exactly to the rest position.
+            mv.cameraOrbit =
+              startTheta  + 'rad ' +
+              startPhi    + 'rad ' +
+              startRadius + 'm';
+            mv.autoRotate = wasAutoRotating;
+            btn.classList.remove('spinning');
+          }
+        }
+
+        // Honor prefers-reduced-motion — instant spin, no oscillation.
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          mv.autoRotate = wasAutoRotating;
+          btn.classList.remove('spinning');
+          return;
+        }
+
+        requestAnimationFrame(frame);
+      });
     });
   })();
 </script>
