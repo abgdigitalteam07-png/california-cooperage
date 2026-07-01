@@ -1225,6 +1225,132 @@
     .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231C4A63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
+    /* ─── HUBSPOT FORM OVERRIDES (match original .contact-form look) ─── */
+    #hs-dealer-form .hs-form,
+    #hs-dealer-form form { font-family: var(--font-body); }
+    #hs-dealer-form .hs-form-field { margin-bottom: 18px; }
+    #hs-dealer-form .hs-form-field > label,
+    #hs-dealer-form .hs-form-field > label > span {
+      display: block;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+    #hs-dealer-form .hs-form-field .hs-form-required { color: var(--red); margin-left: 3px; }
+    #hs-dealer-form .hs-input:not([type="checkbox"]):not([type="radio"]),
+    #hs-dealer-form select.hs-input,
+    #hs-dealer-form textarea.hs-input {
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box;
+      border: 1px solid rgba(28,74,99,0.18);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      line-height: 1.4;
+      color: var(--black);
+      background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      height: auto;
+    }
+    #hs-dealer-form textarea.hs-input { resize: vertical; min-height: 100px; }
+    #hs-dealer-form select.hs-input {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231C4A63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+    #hs-dealer-form .hs-input:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(0,139,156,0.12);
+    }
+    #hs-dealer-form input[type="text"].hs-input::placeholder,
+    #hs-dealer-form input[type="email"].hs-input::placeholder,
+    #hs-dealer-form input[type="tel"].hs-input::placeholder,
+    #hs-dealer-form textarea.hs-input::placeholder { color: rgba(26,26,26,0.35); }
+
+    /* Two-column layout for HubSpot's form-columns-2 rows */
+    #hs-dealer-form .form-columns-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 100% !important;
+    }
+    #hs-dealer-form .form-columns-2 > .hs-form-field { width: auto !important; float: none !important; padding: 0 !important; }
+    #hs-dealer-form .form-columns-1 { max-width: 100% !important; }
+    #hs-dealer-form .form-columns-1 > .hs-form-field { width: 100% !important; float: none !important; padding: 0 !important; }
+    #hs-dealer-form .input { margin: 0 !important; }
+
+    /* Phone-number composite field (country select + number) */
+    #hs-dealer-form .hs-fieldtype-intl-phone .input { display: flex; gap: 8px; }
+    #hs-dealer-form .hs-fieldtype-intl-phone select.hs-input { flex: 0 0 130px; width: 130px !important; }
+    #hs-dealer-form .hs-fieldtype-intl-phone input.hs-input { flex: 1; }
+
+    /* Error messages */
+    #hs-dealer-form .hs-error-msgs { list-style: none; padding: 0; margin: 6px 0 0; }
+    #hs-dealer-form .hs-error-msg,
+    #hs-dealer-form .hs-error-msgs label { color: var(--red); font-size: 0.8rem; font-family: var(--font-body); }
+
+    /* Submit button — match original blue full-width CTA */
+    #hs-dealer-form .hs_submit { margin-top: 8px; }
+    #hs-dealer-form .hs-button,
+    #hs-dealer-form input[type="submit"].hs-button {
+      width: 100%;
+      background: var(--blue);
+      color: var(--white);
+      border: 1px solid var(--blue);
+      border-radius: 6px;
+      padding: 14px 24px;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    #hs-dealer-form .hs-button:hover,
+    #hs-dealer-form input[type="submit"].hs-button:hover {
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    /* Loading + success message styling */
+    #hs-dealer-form .submitted-message {
+      font-family: var(--font-body);
+      color: var(--blue);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding: 20px 0;
+    }
+    #hs-dealer-form .hs-richtext,
+    #hs-dealer-form .hs-richtext p { font-family: var(--font-body); font-size: 0.87rem; color: rgba(26,26,26,0.7); line-height: 1.6; }
+
+    /* Legal consent / GDPR checkbox styling */
+    #hs-dealer-form .legal-consent-container,
+    #hs-dealer-form .hs-form-booleancheckbox-display {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: rgba(26,26,26,0.75);
+      line-height: 1.5;
+    }
+    #hs-dealer-form .hs-form-booleancheckbox-display > span { display: inline; margin-left: 6px; font-family: var(--font-body); font-weight: 400; font-size: 0.85rem; letter-spacing: 0; text-transform: none; color: rgba(26,26,26,0.75); }
+
+    @media (max-width: 640px) {
+      #hs-dealer-form .form-columns-2 { grid-template-columns: 1fr; }
+    }
+    /* ─── /HUBSPOT FORM OVERRIDES ─── */
+
     .trust-signals { margin-top: 40px; }
     .trust-signals-title {
       font-family: var(--font-head);
@@ -2281,13 +2407,55 @@
           <script charset="utf-8" type="text/javascript" src="//js-na2.hsforms.net/forms/embed/v2.js"></script>
           <script>
             (function () {
+              // Full CSS injected INSIDE HubSpot's iframe so the form matches the site look.
+              var HS_CSS = [
+                "@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;700;800&family=Open+Sans:wght@400;500;600&display=swap');",
+                ":root { --blue:#1C4A63; --teal:#008B9C; --yellow:#EFB764; --red:#B33A3A; --white:#FFFFFF; --black:#1A1A1A; }",
+                "body, form.hs-form { font-family:'Open Sans', system-ui, sans-serif; color:#1A1A1A; background:transparent; margin:0; padding:0; }",
+                "fieldset, fieldset.form-columns-1, fieldset.form-columns-2, fieldset.form-columns-3 { border:none !important; padding:0 !important; margin:0 !important; background:none !important; }",
+                "legend { display:none !important; }",
+                ".hs-form-field { margin-bottom:18px; }",
+                ".hs-form-field > label, .hs-form-field > label > span { display:block; font-family:'Jost', system-ui, sans-serif; font-weight:700; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#1C4A63; margin-bottom:6px; }",
+                ".hs-form-required { color:#B33A3A; margin-left:3px; }",
+                ".hs-input:not([type=checkbox]):not([type=radio]), select.hs-input, textarea.hs-input { width:100% !important; max-width:100% !important; box-sizing:border-box; border:1px solid rgba(28,74,99,0.18); border-radius:6px; padding:10px 14px; font-family:'Open Sans', system-ui, sans-serif; font-size:0.92rem; line-height:1.4; color:#1A1A1A; background:#FFFFFF; transition:border-color .2s, box-shadow .2s; appearance:none; -webkit-appearance:none; height:auto; }",
+                "textarea.hs-input { resize:vertical; min-height:100px; }",
+                "select.hs-input { background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231C4A63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; }",
+                ".hs-input:focus { outline:none; border-color:#008B9C; box-shadow:0 0 0 3px rgba(0,139,156,0.12); }",
+                ".hs-input::placeholder, textarea.hs-input::placeholder { color:rgba(26,26,26,0.35); }",
+                ".form-columns-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:100% !important; }",
+                ".form-columns-2 > .hs-form-field { width:auto !important; float:none !important; padding:0 !important; }",
+                ".form-columns-1 { max-width:100% !important; }",
+                ".form-columns-1 > .hs-form-field { width:100% !important; float:none !important; padding:0 !important; }",
+                ".input { margin:0 !important; }",
+                ".hs-fieldtype-intl-phone .input { display:flex; gap:8px; flex-wrap:wrap; }",
+                ".hs-fieldtype-intl-phone select.hs-input { flex:0 0 130px; width:130px !important; }",
+                ".hs-fieldtype-intl-phone input.hs-input { flex:1 1 200px; min-width:0; }",
+                ".hs-fieldtype-intl-phone .hs-input.select { flex:0 0 130px; width:130px !important; }",
+                ".hs-error-msgs { list-style:none; padding:0; margin:6px 0 0; }",
+                ".hs-error-msg, .hs-error-msgs label { color:#B33A3A; font-size:0.8rem; font-family:'Open Sans', system-ui, sans-serif; }",
+                ".hs_submit { margin-top:8px; }",
+                /* Hide reCAPTCHA placeholder strip (v3 invisible captcha) and any empty legal-consent placeholder */
+                ".hs_recaptcha, .hs-recaptcha, .hs-form-field.hs_recaptcha { display:none !important; height:0 !important; margin:0 !important; padding:0 !important; border:0 !important; background:none !important; }",
+                ".grecaptcha-badge { visibility:hidden !important; }",
+                ".legal-consent-container:empty { display:none !important; }",
+                ".hs-button, input[type=submit].hs-button { width:100%; background:#1C4A63; color:#FFFFFF; border:1px solid #1C4A63; border-radius:6px; padding:14px 24px; font-family:'Jost', system-ui, sans-serif; font-weight:800; font-size:0.82rem; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:background .2s, border-color .2s; appearance:none; -webkit-appearance:none; }",
+                ".hs-button:hover, input[type=submit].hs-button:hover { background:#008B9C; border-color:#008B9C; }",
+                ".submitted-message { font-family:'Open Sans', system-ui, sans-serif; color:#1C4A63; font-size:0.95rem; line-height:1.6; padding:20px 0; }",
+                ".hs-richtext, .hs-richtext p { font-family:'Open Sans', system-ui, sans-serif; font-size:0.87rem; color:rgba(26,26,26,0.7); line-height:1.6; }",
+                ".legal-consent-container, .hs-form-booleancheckbox-display { font-family:'Open Sans', system-ui, sans-serif; font-size:0.85rem; color:rgba(26,26,26,0.75); line-height:1.5; }",
+                ".hs-form-booleancheckbox-display > span { display:inline; margin-left:6px; font-family:'Open Sans', system-ui, sans-serif; font-weight:400; font-size:0.85rem; letter-spacing:0; text-transform:none; color:rgba(26,26,26,0.75); }",
+                "@media (max-width:640px) { .form-columns-2 { grid-template-columns:1fr; } }"
+              ].join("\n");
+
               function initHsForm() {
                 if (!window.hbspt || !hbspt.forms) { return setTimeout(initHsForm, 120); }
                 hbspt.forms.create({
                   portalId: "358916",
                   formId: "db51bd40-146b-4182-a875-6b86dcd08fb2",
                   region: "na2",
-                  target: "#hs-dealer-form"
+                  target: "#hs-dealer-form",
+                  cssRequired: "",
+                  css: HS_CSS
                 });
               }
               initHsForm();
