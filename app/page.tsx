@@ -165,8 +165,8 @@ export default function HomePage() {
           </div>
           <div className="grid md:grid-cols-2 gap-6 max-w-[700px] mx-auto">
             {[
-              { title: 'MAAX Saunas', sub: 'Premium indoor and outdoor sauna solutions', cta: 'Explore Saunas →' },
-              { title: 'MAAX Chillers', sub: 'Cold plunge and contrast therapy systems', cta: 'Explore Chillers →' },
+              { title: 'MAAX Saunas', sub: 'Premium indoor and outdoor sauna solutions', cta: 'Explore Saunas →', href: 'https://www.maaxsaunas.com/' },
+              { title: 'MAAX Chillers', sub: 'Cold plunge and contrast therapy systems', cta: 'Explore Chillers →', href: 'https://maaxchillers.com/' },
             ].map((partner) => (
               <div key={partner.title} className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-colors">
                 <div className="flex items-center gap-4 mb-4">
@@ -176,7 +176,7 @@ export default function HomePage() {
                     <p className="font-body text-white/50 text-xs">{partner.sub}</p>
                   </div>
                 </div>
-                <a href="#" className="font-body font-bold text-[#3A5F35] text-sm hover:text-[#5A8252] transition-colors">{partner.cta}</a>
+                <a href={partner.href} target="_blank" rel="noopener noreferrer" className="font-body font-bold text-[#3A5F35] text-sm hover:text-[#5A8252] transition-colors">{partner.cta}</a>
               </div>
             ))}
           </div>

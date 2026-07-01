@@ -44,8 +44,8 @@ export default function Footer() {
           <div>
             <h4 className="font-body font-bold text-white text-xs uppercase tracking-widest mb-4">Partners</h4>
             <ul className="space-y-2 text-sm mb-6">
-              <li><a href="#" className="hover:text-white transition-colors">MAAX Saunas</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">MAAX Chillers</a></li>
+              <li><a href="https://www.maaxsaunas.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">MAAX Saunas</a></li>
+              <li><a href="https://maaxchillers.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">MAAX Chillers</a></li>
             </ul>
             <h4 className="font-body font-bold text-white text-xs uppercase tracking-widest mb-4">Contact</h4>
             <ul className="space-y-2 text-sm">
