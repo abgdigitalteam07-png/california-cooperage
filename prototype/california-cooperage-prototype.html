@@ -1459,8 +1459,8 @@
         <article class="product-card" onclick="showPage('cr1')" tabindex="0" role="button" aria-label="View CR1 — The Classic">
           <div class="product-img-area" style="padding:0;overflow:hidden;">
             <picture>
-              <source media="(min-width: 768px)" srcset="cc-assets/cr1-hero.webp" />
-              <img src="cc-assets/cr1-mobile.webp" alt="CR1 hot tub" style="width:100%;height:100%;object-fit:contain;" />
+              <source media="(min-width: 768px)" srcset="cc-assets/cr1-hero-lifestyle.jpg" />
+              <img src="cc-assets/cr1-hero-lifestyle.jpg" alt="CR1 hot tub" style="width:100%;height:100%;object-fit:cover;" />
             </picture>
           </div>
           <div class="product-body">
@@ -1500,8 +1500,8 @@
         <article class="product-card" onclick="showPage('cr3')" tabindex="0" role="button" aria-label="View CR3 — The Social">
           <div class="product-img-area" style="padding:0;overflow:hidden;">
             <picture>
-              <source media="(min-width: 768px)" srcset="cc-assets/cr3-hero.webp" />
-              <img src="cc-assets/cr3-mobile.webp" alt="CR3 hot tub" style="width:100%;height:100%;object-fit:contain;" />
+              <source media="(min-width: 768px)" srcset="cc-assets/cr3-hero-lifestyle.jpg" />
+              <img src="cc-assets/cr3-hero-lifestyle.jpg" alt="CR3 hot tub" style="width:100%;height:100%;object-fit:cover;" />
             </picture>
           </div>
           <div class="product-body">
@@ -1533,6 +1533,7 @@
           </div>
           <h3>MAAX Saunas</h3>
           <p>Complete your backyard retreat. MAAX saunas pair perfectly with any CR model for a full hot-cold wellness experience.</p>
+          <a href="https://www.maaxsaunas.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:12px;font-size:0.85rem;font-weight:700;color:var(--white);text-decoration:underline;">Explore Saunas →</a>
         </div>
         <div class="partner-tile">
           <div class="partner-logo-placeholder" aria-hidden="true">
@@ -1540,6 +1541,7 @@
           </div>
           <h3>MAAX Chillers</h3>
           <p>Cold plunge and contrast therapy. MAAX chillers keep the temperature exactly where you want it, year-round.</p>
+          <a href="https://maaxchillers.com/" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:12px;font-size:0.85rem;font-weight:700;color:var(--white);text-decoration:underline;">Explore Chillers →</a>
         </div>
       </div>
     </div>
@@ -2154,38 +2156,16 @@
 
         <div class="contact-form">
           <div class="form-title">Request Dealer Info</div>
-          <form onsubmit="handleFormSubmit(event)" novalidate>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="dealer-name">Name <span style="color:var(--red)">*</span></label>
-                <input class="form-input" type="text" id="dealer-name" name="name" required autocomplete="name" placeholder="Your name" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="dealer-email">Email <span style="color:var(--red)">*</span></label>
-                <input class="form-input" type="email" id="dealer-email" name="email" required autocomplete="email" placeholder="you@example.com" />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="dealer-postal">Postal Code <span style="color:var(--red)">*</span></label>
-                <input class="form-input" type="text" id="dealer-postal" name="postal" required autocomplete="postal-code" placeholder="e.g. 90210" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="dealer-model">Model of Interest</label>
-                <select class="form-select" id="dealer-model" name="model">
-                  <option value="">Not Sure Yet</option>
-                  <option value="cr1">CR1 — The Classic</option>
-                  <option value="cr2">CR2 — The Entertainer</option>
-                  <option value="cr3">CR3 — The Social</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="dealer-message">Message</label>
-              <textarea class="form-textarea" id="dealer-message" name="message" placeholder="Anything you'd like us to know..."></textarea>
-            </div>
-            <button type="submit" class="btn btn-blue" style="width:100%;justify-content:center;">Find My Nearest Dealer</button>
-          </form>
+          <div id="hs-dealer-form"></div>
+          <script charset="utf-8" type="text/javascript" src="//js-na2.hsforms.net/forms/embed/v2.js"></script>
+          <script>
+            hbspt.forms.create({
+              portalId: "358916",
+              formId: "db51bd40-146b-4182-a875-6b86dcd08fb2",
+              region: "na2",
+              target: "#hs-dealer-form"
+            });
+          </script>
         </div>
 
         <div>
@@ -2264,8 +2244,8 @@
       <div>
         <div class="footer-col-title">Partners</div>
         <ul class="footer-links" role="list">
-          <li><a tabindex="0" role="button">MAAX Saunas</a></li>
-          <li><a tabindex="0" role="button">MAAX Chillers</a></li>
+          <li><a href="https://www.maaxsaunas.com/" target="_blank" rel="noopener noreferrer">MAAX Saunas</a></li>
+          <li><a href="https://maaxchillers.com/" target="_blank" rel="noopener noreferrer">MAAX Chillers</a></li>
         </ul>
       </div>
     </div>
