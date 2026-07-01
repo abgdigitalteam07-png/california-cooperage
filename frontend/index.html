@@ -1289,10 +1289,35 @@
     #hs-dealer-form .form-columns-1 > .hs-form-field { width: 100% !important; float: none !important; padding: 0 !important; }
     #hs-dealer-form .input { margin: 0 !important; }
 
-    /* Phone-number composite field (country select + number) */
-    #hs-dealer-form .hs-fieldtype-intl-phone .input { display: flex; gap: 8px; }
-    #hs-dealer-form .hs-fieldtype-intl-phone select.hs-input { flex: 0 0 130px; width: 130px !important; }
-    #hs-dealer-form .hs-fieldtype-intl-phone input.hs-input { flex: 1; }
+    /* Phone-number composite field: the .hs-fieldtype-intl-phone div wraps country <select> + tel <input>.
+       Strip HubSpot's .hs-input styling from the wrapper, then flex its children onto one row. */
+    #hs-dealer-form .hs-input.hs-fieldtype-intl-phone,
+    #hs-dealer-form div.hs-fieldtype-intl-phone {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 8px !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      padding: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      width: 100% !important;
+      height: auto !important;
+    }
+    #hs-dealer-form .hs-fieldtype-intl-phone > select,
+    #hs-dealer-form .hs-fieldtype-intl-phone > select.hs-input {
+      flex: 0 0 140px !important;
+      width: 140px !important;
+      max-width: 140px !important;
+    }
+    #hs-dealer-form .hs-fieldtype-intl-phone > input,
+    #hs-dealer-form .hs-fieldtype-intl-phone > input[type="tel"],
+    #hs-dealer-form .hs-fieldtype-intl-phone > input.hs-input {
+      flex: 1 1 auto !important;
+      width: auto !important;
+      min-width: 0 !important;
+    }
 
     /* Error messages */
     #hs-dealer-form .hs-error-msgs { list-style: none; padding: 0; margin: 6px 0 0; }
@@ -2427,10 +2452,12 @@
                 ".form-columns-1 { max-width:100% !important; }",
                 ".form-columns-1 > .hs-form-field { width:100% !important; float:none !important; padding:0 !important; }",
                 ".input { margin:0 !important; }",
-                ".hs-fieldtype-intl-phone .input { display:flex; gap:8px; flex-wrap:wrap; }",
-                ".hs-fieldtype-intl-phone select.hs-input { flex:0 0 130px; width:130px !important; }",
-                ".hs-fieldtype-intl-phone input.hs-input { flex:1 1 200px; min-width:0; }",
-                ".hs-fieldtype-intl-phone .hs-input.select { flex:0 0 130px; width:130px !important; }",
+                ".hs-fieldtype-intl-phone .input, .hs_phone .input, [data-fieldname*='phone'] .input, .hs-fieldtype-phonenumber .input { display:block !important; }",
+                /* The .hs-fieldtype-intl-phone div is the actual flex container containing select + input.
+                   Note: this div ALSO has class .hs-input — we must strip the input styling from it. */
+                ".hs-input.hs-fieldtype-intl-phone, div.hs-fieldtype-intl-phone { display:flex !important; flex-direction:row !important; gap:8px !important; flex-wrap:nowrap !important; align-items:center !important; padding:0 !important; border:none !important; background:transparent !important; box-shadow:none !important; width:100% !important; height:auto !important; }",
+                ".hs-fieldtype-intl-phone > select, .hs-fieldtype-intl-phone > select.hs-input { flex:0 0 140px !important; width:140px !important; max-width:140px !important; }",
+                ".hs-fieldtype-intl-phone > input, .hs-fieldtype-intl-phone > input.hs-input, .hs-fieldtype-intl-phone > input[type=tel] { flex:1 1 auto !important; width:auto !important; min-width:0 !important; }",
                 ".hs-error-msgs { list-style:none; padding:0; margin:6px 0 0; }",
                 ".hs-error-msg, .hs-error-msgs label { color:#B33A3A; font-size:0.8rem; font-family:'Open Sans', system-ui, sans-serif; }",
                 ".hs_submit { margin-top:8px; }",
@@ -2455,7 +2482,72 @@
                   region: "na2",
                   target: "#hs-dealer-form",
                   cssRequired: "",
-                  css: HS_CSS
+                  css: HS_CSS,
+                  onFormReady: function ($form) {
+                    // Force the international phone widget onto a single row by finding
+                    // the common ancestor of the country <select> and the <input type=tel>
+                    // and making it flex-row. Robust to whatever DOM HubSpot renders.
+                    function fixPhone(formEl) {
+                      try {
+                        if (!formEl || !formEl.querySelector) return false;
+                        var tel = formEl.querySelector('input[type="tel"]');
+                        var field = tel ? (tel.closest('.hs-form-field') || tel.parentElement) : formEl.querySelector('.hs_phone, .hs-fieldtype-intl-phone, .hs-fieldtype-phonenumber');
+                        if (!field) return false;
+                        var select = field.querySelector('select');
+                        if (!tel || !select) return false;
+
+                        // Walk up from tel until we find an ancestor that also contains select
+                        var ancestor = tel.parentElement;
+                        while (ancestor && ancestor !== field && !ancestor.contains(select)) {
+                          ancestor = ancestor.parentElement;
+                        }
+                        if (!ancestor) ancestor = field;
+
+                        // Force common ancestor into a flex row
+                        ancestor.style.setProperty('display', 'flex', 'important');
+                        ancestor.style.setProperty('flex-direction', 'row', 'important');
+                        ancestor.style.setProperty('gap', '8px', 'important');
+                        ancestor.style.setProperty('flex-wrap', 'nowrap', 'important');
+                        ancestor.style.setProperty('align-items', 'center', 'important');
+                        ancestor.style.setProperty('width', '100%', 'important');
+
+                        // Size each direct child properly
+                        Array.prototype.forEach.call(ancestor.children, function (child) {
+                          if (child === select || (child.contains && child.contains(select))) {
+                            child.style.setProperty('flex', '0 0 140px', 'important');
+                            child.style.setProperty('width', '140px', 'important');
+                            child.style.setProperty('max-width', '140px', 'important');
+                          } else if (child === tel || (child.contains && child.contains(tel))) {
+                            child.style.setProperty('flex', '1 1 auto', 'important');
+                            child.style.setProperty('width', 'auto', 'important');
+                            child.style.setProperty('max-width', 'none', 'important');
+                          } else {
+                            // Any other sibling (labels, error msgs) shouldn't push things
+                            child.style.setProperty('flex', '0 0 auto', 'important');
+                          }
+                        });
+
+                        // Ensure innermost inputs stretch to fill their wrappers
+                        select.style.setProperty('width', '100%', 'important');
+                        select.style.setProperty('max-width', '100%', 'important');
+                        tel.style.setProperty('width', '100%', 'important');
+                        tel.style.setProperty('max-width', '100%', 'important');
+                        return true;
+                      } catch (e) { return false; }
+                    }
+
+                    try {
+                      var formEl = ($form && $form[0]) ? $form[0] : ($form && $form.length ? $form[0] : $form);
+                      if (!formEl) return;
+                      // Try immediately, then retry a few times in case HubSpot re-renders phone widget
+                      var attempts = 0;
+                      var iv = setInterval(function () {
+                        attempts++;
+                        var ok = fixPhone(formEl);
+                        if (ok || attempts > 10) clearInterval(iv);
+                      }, 200);
+                    } catch (e) { /* ignore */ }
+                  }
                 });
               }
               initHsForm();
