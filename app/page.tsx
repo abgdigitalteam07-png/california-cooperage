@@ -29,13 +29,13 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <p className="text-[#B8963E] font-body font-bold text-xs uppercase tracking-widest mb-4">
-                ★ California&apos;s Original Hot Tub Since 1972
+                OLD-SCHOOL COOL. NEW-SCHOOL EASY.
               </p>
               <h1 className="font-display font-bold text-white text-4xl md:text-5xl leading-tight mb-6">
-                California&apos;s Original Hot Tub — Now More Accessible Than Ever
+                California&apos;s Original Hot Tub – Now Easier Than Ever
               </h1>
               <p className="text-white/70 font-body text-lg leading-relaxed mb-8">
-                Our 2026 rotomold lineup features Balboa controls, full foam insulation, and 3KW heaters — genuine spa performance at an accessible price.
+                Hot tubs that fit your life. Just plug in and chill out.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/cr1-hot-tub" className="px-8 py-3 bg-[#3A5F35] hover:bg-[#2C4A28] text-white font-body font-bold text-sm rounded-sm transition-colors">
@@ -49,10 +49,10 @@ export default function HomePage() {
             <div className="hidden lg:flex items-center justify-center">
               <div className="relative w-full max-w-lg">
                 <div className="absolute -top-4 -right-4 bg-[#B8963E] text-white text-xs font-body font-bold px-4 py-2 rounded-sm shadow-lg z-10">
-                  ★ Est. 1972 — America&apos;s Original Hot Tub Brand
+                  ★ Est. 1972 — Simple Pleasures Done Right
                 </div>
                 <img
-                  src="/images/homepage-hero.jpg"
+                  src="https://res.cloudinary.com/american-bath-group/image/upload/v1782933307/abggraphics/original-images/maax-spas/california-cooperage/calcoop-cr1-cr2-cr3-deco.png"
                   alt="California Cooperage hot tubs on a backyard deck at sunset"
                   className="rounded-lg w-full object-cover"
                 />
