@@ -213,7 +213,7 @@
     .hero {
       background:
         linear-gradient(rgba(28, 74, 99, 0.72), rgba(28, 74, 99, 0.55)),
-        url('cc-assets/homepage-hero.webp') center/cover no-repeat;
+        url('cc-assets/homepage-hero-deco.png') center/cover no-repeat;
       padding: 80px 24px 90px;
     }
     .hero-inner {
@@ -908,6 +908,63 @@
       border-bottom: 2px solid var(--beige);
     }
 
+    /* PID Download button (sits below the specs table) */
+    .pid-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: var(--white);
+      color: var(--blue);
+      border: 1.5px solid var(--blue);
+      border-radius: 6px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .pid-download-btn:hover { background: var(--blue); color: var(--white); }
+    .pid-download-btn svg { width: 14px; height: 14px; stroke-width: 2.4; }
+
+    /* Product photo grid — 3 crop shots on top row, 2 lifestyle shots on bottom row */
+    .product-photo-grid-section { background: var(--offwhite); padding: 60px 24px; }
+    .product-photo-grid-inner { max-width: 1200px; margin: 0 auto; }
+    .product-photo-grid-header { text-align: center; margin-bottom: 28px; }
+    .product-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+    .product-photo-grid > figure {
+      margin: 0;
+      overflow: hidden;
+      border-radius: 8px;
+      background: var(--white);
+      border: 1px solid rgba(28,74,99,0.08);
+      aspect-ratio: 4 / 3;
+    }
+    .product-photo-grid > figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .product-photo-grid > figure:nth-child(1),
+    .product-photo-grid > figure:nth-child(2),
+    .product-photo-grid > figure:nth-child(3) { grid-column: span 2; }
+    .product-photo-grid > figure:nth-child(4),
+    .product-photo-grid > figure:nth-child(5) { grid-column: span 3; aspect-ratio: 16 / 9; }
+    @media (max-width: 720px) {
+      .product-photo-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .product-photo-grid > figure:nth-child(n) { grid-column: span 1; aspect-ratio: 4 / 3; }
+      .product-photo-grid > figure:nth-child(5) { grid-column: span 2; aspect-ratio: 16 / 9; }
+    }
+
     /* ─── FEATURES GRID ──────────────────────────────────── */
     .features-section { background: var(--white); }
     .features-grid {
@@ -1570,10 +1627,10 @@
       <div>
         <div class="eyebrow-pill">
           <span aria-hidden="true">★</span>
-          California's Original Hot Tub Since 1972
+          Old-School Cool. New-School Easy.
         </div>
-        <h1>California's Original Hot Tub —<br>Now More Accessible Than Ever</h1>
-        <p class="hero-sub">Three rotomold spas built for real backyards. Balboa controls, full foam insulation, and 50 years of California know-how.</p>
+        <h1>California's Original Hot Tub –<br>Now Easier Than Ever</h1>
+        <p class="hero-sub">Hot tubs that fit your life. Just plug in and chill out.</p>
         <div class="hero-btns">
           <button class="btn btn-yellow" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Our Spas</button>
           <button class="btn btn-outline-white" onclick="showPage('warranty')">Warranty &amp; Docs</button>
@@ -1586,7 +1643,7 @@
             <div class="badge-est">Est.</div>
             <div class="badge-year">1972</div>
             <div class="badge-line"></div>
-            <div class="badge-title">America's Original<br>Hot Tub Brand</div>
+            <div class="badge-title">Simple Pleasures<br>Done Right</div>
             <div class="badge-line"></div>
             <div class="badge-subtitle">California Cooperage</div>
           </div>
@@ -1684,7 +1741,7 @@
           </div>
           <div class="product-body">
             <div class="product-name">CR3</div>
-            <p class="product-tagline">Six in the round. No bad seat in the house.</p>
+            <p class="product-tagline">Not a bad seat in the house.</p>
             <div class="product-chips">
               <span class="chip">6 Person</span>
               <span class="chip">Round</span>
@@ -1799,7 +1856,7 @@
       <p class="tagline">Five Seats. Rectangular Footprint. Full California Performance.</p>
       <div class="spec-chips-row">
         <span class="spec-chip">5 Person</span>
-        <span class="spec-chip">Rectangular 68" × 59"</span>
+        <span class="spec-chip">Rectangular 69″×60″</span>
         <span class="spec-chip">14 Jets</span>
         <span class="spec-chip">3KW Heater</span>
         <span class="spec-chip">Balboa</span>
@@ -1852,22 +1909,42 @@
             <div class="specs-title">Specifications</div>
             <table class="specs-table" aria-label="CR1 specification table">
               <tbody>
-                <tr><td>Model Code</td><td>CR1</td></tr>
+                <tr><td>Model</td><td>CR1</td></tr>
                 <tr><td>Seating</td><td>5 Persons</td></tr>
                 <tr><td>Shape</td><td>Rectangular</td></tr>
-                <tr><td>Dimensions</td><td>68" × 59" × 30" (173 × 150 × 76 cm)</td></tr>
-                <tr><td>Dry Weight</td><td>~364 lbs (~165 kg)</td></tr>
-                <tr><td>Filled Weight</td><td>~1,830 lbs (~830 kg)</td></tr>
+                <tr><td>Dimensions</td><td>175 × 152 × 76 cm (69" × 60" × 30")</td></tr>
+                <tr><td>Dry Weight</td><td>~309 lbs (~140 kg)</td></tr>
+                <tr><td>Filled Weight</td><td>~1,720 lbs (~780 kg)</td></tr>
                 <tr><td>Total Jets</td><td>14</td></tr>
                 <tr><td>Control</td><td>Balboa</td></tr>
                 <tr><td>Heater</td><td>3 kW</td></tr>
-                <tr><td>Pump</td><td>2 HP 2-Speed</td></tr>
+                <tr><td>Pump</td><td>1.5 HP 2-Speed</td></tr>
                 <tr><td>Lighting</td><td>12V / 12W</td></tr>
                 <tr><td>Insulation</td><td>Full foam</td></tr>
               </tbody>
             </table>
+            <a class="pid-download-btn" href="https://res.cloudinary.com/american-bath-group/image/upload/v1782931775/websites-product-info-andcontent/california-cooperage/pid-sheets/california-cooperage-tech-datas-cr1.pdf" target="_blank" rel="noopener noreferrer" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PID Sheet
+            </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-photo-grid-section" aria-label="CR1 photo gallery">
+    <div class="product-photo-grid-inner">
+      <div class="product-photo-grid-header">
+        <span class="eyebrow">CR1 Gallery</span>
+        <h2 style="color:var(--blue);font-size:clamp(1.4rem,2vw,1.9rem);margin-top:6px;">See It From Every Angle</h2>
+      </div>
+      <div class="product-photo-grid">
+        <figure><img src="cc-assets/cr1-top.jpg" alt="CR1 hot tub top view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr1-front.jpg" alt="CR1 hot tub front view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr1-side.jpg" alt="CR1 hot tub side view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr1-deco.jpg" alt="CR1 hot tub in a decorated setting" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr1-people-deco.jpg" alt="CR1 hot tub in use" loading="lazy" /></figure>
       </div>
     </div>
   </section>
@@ -1911,7 +1988,7 @@
           <div class="feature-icon" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </div>
-          <div class="feature-name">California Heritage</div>
+          <div class="feature-name">Entry Steps</div>
         </div>
       </div>
     </div>
@@ -1930,7 +2007,7 @@
             What is the footprint of the CR1?
             <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
           </button>
-          <div class="faq-answer"><p>The CR1 measures 68" × 59" (173 × 150 cm). It fits most standard deck spaces and is the most compact of the three models.</p></div>
+          <div class="faq-answer"><p>The CR1 measures 69" × 60" (175 × 152 cm). It fits most standard deck spaces and is the most compact of the three models.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
@@ -1969,12 +2046,12 @@
           <tbody>
             <tr><td>Seating</td><td class="col-current">5 Persons</td><td>7 Persons</td><td>6 Persons</td></tr>
             <tr><td>Shape</td><td class="col-current">Rectangular</td><td>Square</td><td>Round</td></tr>
-            <tr><td>Dimensions</td><td class="col-current">68" × 59" × 30"</td><td>81" × 81" × 32"</td><td>81" × 81" × 32"</td></tr>
+            <tr><td>Dimensions</td><td class="col-current">69" × 60" × 30"</td><td>81" × 81" × 32"</td><td>80" × 80" × 32"</td></tr>
             <tr><td>Total Jets</td><td class="col-current">14</td><td>25</td><td>21</td></tr>
             <tr><td>Heater</td><td class="col-current">3 kW</td><td>3 kW</td><td>3 kW</td></tr>
             <tr><td>Controls</td><td class="col-current">Balboa</td><td>Balboa</td><td>Balboa</td></tr>
-            <tr><td>Dry Weight</td><td class="col-current">~364 lbs</td><td>~972 lbs</td><td>~529 lbs</td></tr>
-            <tr><td>Filled Weight</td><td class="col-current">~1,830 lbs</td><td>~2,425 lbs</td><td>~2,293 lbs</td></tr>
+            <tr><td>Dry Weight</td><td class="col-current">~309 lbs</td><td>~441 lbs</td><td>~529 lbs</td></tr>
+            <tr><td>Filled Weight</td><td class="col-current">~1,720 lbs</td><td>~2,426 lbs</td><td>~2,293 lbs</td></tr>
             <tr><td>Insulation</td><td class="col-current">Full Foam</td><td>Full Foam</td><td>Full Foam</td></tr>
           </tbody>
         </table>
@@ -2063,7 +2140,7 @@
             </span>
             <div>
               <h4>Site Prep Required</h4>
-              <p>The CR2 weighs approximately 2,425 lbs (1,100 kg) when filled. Confirm your deck or patio can support this load before installation.</p>
+              <p>The CR2 weighs approximately 2,426 lbs (1,100 kg) when filled. Confirm your deck or patio can support this load before installation.</p>
             </div>
           </div>
         </div>
@@ -2072,12 +2149,12 @@
             <div class="specs-title">Specifications</div>
             <table class="specs-table" aria-label="CR2 specification table">
               <tbody>
-                <tr><td>Model Code</td><td>CR2</td></tr>
+                <tr><td>Model</td><td>CR2</td></tr>
                 <tr><td>Seating</td><td>7 Persons</td></tr>
                 <tr><td>Shape</td><td>Square</td></tr>
                 <tr><td>Dimensions</td><td>81" × 81" × 32" (205 × 205 × 81 cm)</td></tr>
-                <tr><td>Dry Weight</td><td>~972 lbs (~441 kg)</td></tr>
-                <tr><td>Filled Weight</td><td>~2,425 lbs (~1,100 kg)</td></tr>
+                <tr><td>Dry Weight</td><td>~441 lbs (~200 kg)</td></tr>
+                <tr><td>Filled Weight</td><td>~2,426 lbs (~1,100 kg)</td></tr>
                 <tr><td>Total Jets</td><td>25</td></tr>
                 <tr><td>Pillows</td><td>2</td></tr>
                 <tr><td>Water Diverter</td><td>1</td></tr>
@@ -2088,8 +2165,28 @@
                 <tr><td>Insulation</td><td>Full foam</td></tr>
               </tbody>
             </table>
+            <a class="pid-download-btn" href="https://res.cloudinary.com/american-bath-group/image/upload/v1782931777/websites-product-info-andcontent/california-cooperage/pid-sheets/california-cooperage-tech-datas-cr2.pdf" target="_blank" rel="noopener noreferrer" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PID Sheet
+            </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-photo-grid-section" aria-label="CR2 photo gallery">
+    <div class="product-photo-grid-inner">
+      <div class="product-photo-grid-header">
+        <span class="eyebrow">CR2 Gallery</span>
+        <h2 style="color:var(--blue);font-size:clamp(1.4rem,2vw,1.9rem);margin-top:6px;">See It From Every Angle</h2>
+      </div>
+      <div class="product-photo-grid">
+        <figure><img src="cc-assets/cr2-top.jpg" alt="CR2 hot tub top view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr2-side.jpg" alt="CR2 hot tub side view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr2-front.jpg" alt="CR2 hot tub front view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr2-deco.jpg" alt="CR2 hot tub in a decorated setting" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr2-people-deco.jpg" alt="CR2 hot tub in use" loading="lazy" /></figure>
       </div>
     </div>
   </section>
@@ -2104,7 +2201,40 @@
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"/><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/></svg></div><div class="feature-name">25-Jet Hydrotherapy</div></div>
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12"/></svg></div><div class="feature-name">2 Headrest Pillows</div></div>
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="feature-name">Seamless Rotomold Shell</div></div>
-        <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="feature-name">California Heritage</div></div>
+        <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="feature-name">Entry Steps</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CR2 FAQ -->
+  <section class="section faq-section" aria-label="CR2 FAQ">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">CR2 FAQ</span>
+        <h2>CR2 Questions Answered</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How much does the CR2 weigh when filled?
+            <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-answer"><p>~441 lbs dry, ~2,426 lbs filled. Confirm deck can support load.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What makes the CR2 the flagship?
+            <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-answer"><p>Largest at 81"×81", 7 seats, 25 jets, 2 pillows, water diverter.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How does CR2 compare to CR1 and CR3?
+            <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-answer"><p>CR2 is largest. CR1 is compact 5-person rectangular. CR3 is 6-person round.</p></div>
+        </div>
       </div>
     </div>
   </section>
@@ -2128,12 +2258,12 @@
           <tbody>
             <tr><td>Seating</td><td>5 Persons</td><td class="col-current">7 Persons</td><td>6 Persons</td></tr>
             <tr><td>Shape</td><td>Rectangular</td><td class="col-current">Square</td><td>Round</td></tr>
-            <tr><td>Dimensions</td><td>68" × 59" × 30"</td><td class="col-current">81" × 81" × 32"</td><td>81" × 81" × 32"</td></tr>
+            <tr><td>Dimensions</td><td>69" × 60" × 30"</td><td class="col-current">81" × 81" × 32"</td><td>80" × 80" × 32"</td></tr>
             <tr><td>Total Jets</td><td>14</td><td class="col-current">25</td><td>21</td></tr>
             <tr><td>Heater</td><td>3 kW</td><td class="col-current">3 kW</td><td>3 kW</td></tr>
             <tr><td>Controls</td><td>Balboa</td><td class="col-current">Balboa</td><td>Balboa</td></tr>
-            <tr><td>Dry Weight</td><td>~364 lbs</td><td class="col-current">~972 lbs</td><td>~529 lbs</td></tr>
-            <tr><td>Filled Weight</td><td>~1,830 lbs</td><td class="col-current">~2,425 lbs</td><td>~2,293 lbs</td></tr>
+            <tr><td>Dry Weight</td><td>~309 lbs</td><td class="col-current">~441 lbs</td><td>~529 lbs</td></tr>
+            <tr><td>Filled Weight</td><td>~1,720 lbs</td><td class="col-current">~2,426 lbs</td><td>~2,293 lbs</td></tr>
             <tr><td>Insulation</td><td>Full Foam</td><td class="col-current">Full Foam</td><td>Full Foam</td></tr>
           </tbody>
         </table>
@@ -2166,7 +2296,7 @@
       <p class="tagline">Six in the Round. No Bad Seat.</p>
       <div class="spec-chips-row">
         <span class="spec-chip">6 Person</span>
-        <span class="spec-chip">Round 81" × 81"</span>
+        <span class="spec-chip">Round 80″×80″</span>
         <span class="spec-chip">21 Jets</span>
         <span class="spec-chip">3KW Heater</span>
         <span class="spec-chip">Balboa Controls</span>
@@ -2235,10 +2365,10 @@
             <div class="specs-title">Specifications</div>
             <table class="specs-table" aria-label="CR3 specification table">
               <tbody>
-                <tr><td>Model Code</td><td>CR3</td></tr>
+                <tr><td>Model</td><td>CR3</td></tr>
                 <tr><td>Seating</td><td>6 Persons</td></tr>
                 <tr><td>Shape</td><td>Round</td></tr>
-                <tr><td>Dimensions</td><td>81" × 81" × 32" (205 × 205 × 81 cm)</td></tr>
+                <tr><td>Dimensions</td><td>203 × 203 × 81 cm (80" × 80" × 32")</td></tr>
                 <tr><td>Dry Weight</td><td>~529 lbs (~240 kg)</td></tr>
                 <tr><td>Filled Weight</td><td>~2,293 lbs (~1,040 kg)</td></tr>
                 <tr><td>Total Jets</td><td>21</td></tr>
@@ -2248,8 +2378,28 @@
                 <tr><td>Insulation</td><td>Full foam</td></tr>
               </tbody>
             </table>
+            <a class="pid-download-btn" href="https://res.cloudinary.com/american-bath-group/image/upload/v1782931780/websites-product-info-andcontent/california-cooperage/pid-sheets/california-cooperage-tech-datas-cr3.pdf" target="_blank" rel="noopener noreferrer" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download PID Sheet
+            </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-photo-grid-section" aria-label="CR3 photo gallery">
+    <div class="product-photo-grid-inner">
+      <div class="product-photo-grid-header">
+        <span class="eyebrow">CR3 Gallery</span>
+        <h2 style="color:var(--blue);font-size:clamp(1.4rem,2vw,1.9rem);margin-top:6px;">See It From Every Angle</h2>
+      </div>
+      <div class="product-photo-grid">
+        <figure><img src="cc-assets/cr3-top.jpg" alt="CR3 hot tub top view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr3-side.jpg" alt="CR3 hot tub side view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr3-front.jpg" alt="CR3 hot tub front view" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr3-deco.jpg" alt="CR3 hot tub in a decorated setting" loading="lazy" /></figure>
+        <figure><img src="cc-assets/cr3-people-deco.jpg" alt="CR3 hot tub in use" loading="lazy" /></figure>
       </div>
     </div>
   </section>
@@ -2264,7 +2414,40 @@
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"/><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/></svg></div><div class="feature-name">21-Jet Hydrotherapy</div></div>
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12"/><path d="M12 6v6l4 2"/></svg></div><div class="feature-name">3KW Heater + Full Foam</div></div>
         <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="feature-name">Seamless Rotomold Shell</div></div>
-        <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="feature-name">California Heritage</div></div>
+        <div class="feature-card"><div class="feature-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="feature-name">Entry Steps</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CR3 FAQ -->
+  <section class="section faq-section" aria-label="CR3 FAQ">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">CR3 FAQ</span>
+        <h2>CR3 Questions Answered</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            What are the dimensions of the CR3?
+            <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-answer"><p>80" × 80" × 32" (203 × 203 × 81 cm).</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How are jets positioned in a round spa?
+            <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-answer"><p>21 jets around the perimeter, equal coverage to all 6 seats.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)" aria-expanded="false">
+            How does CR3 compare to CR1 and CR2?
+            <span class="faq-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="faq-answer"><p>CR3 is 6-person round. CR1 is 5-person rectangular. CR2 is 7-person square flagship.</p></div>
+        </div>
       </div>
     </div>
   </section>
@@ -2288,12 +2471,12 @@
           <tbody>
             <tr><td>Seating</td><td>5 Persons</td><td>7 Persons</td><td class="col-current">6 Persons</td></tr>
             <tr><td>Shape</td><td>Rectangular</td><td>Square</td><td class="col-current">Round</td></tr>
-            <tr><td>Dimensions</td><td>68" × 59" × 30"</td><td>81" × 81" × 32"</td><td class="col-current">81" × 81" × 32"</td></tr>
+            <tr><td>Dimensions</td><td>69" × 60" × 30"</td><td>81" × 81" × 32"</td><td class="col-current">80" × 80" × 32"</td></tr>
             <tr><td>Total Jets</td><td>14</td><td>25</td><td class="col-current">21</td></tr>
             <tr><td>Heater</td><td>3 kW</td><td>3 kW</td><td class="col-current">3 kW</td></tr>
             <tr><td>Controls</td><td>Balboa</td><td>Balboa</td><td class="col-current">Balboa</td></tr>
-            <tr><td>Dry Weight</td><td>~364 lbs</td><td>~972 lbs</td><td class="col-current">~529 lbs</td></tr>
-            <tr><td>Filled Weight</td><td>~1,830 lbs</td><td>~2,425 lbs</td><td class="col-current">~2,293 lbs</td></tr>
+            <tr><td>Dry Weight</td><td>~309 lbs</td><td>~441 lbs</td><td class="col-current">~529 lbs</td></tr>
+            <tr><td>Filled Weight</td><td>~1,720 lbs</td><td>~2,426 lbs</td><td class="col-current">~2,293 lbs</td></tr>
             <tr><td>Insulation</td><td>Full Foam</td><td>Full Foam</td><td class="col-current">Full Foam</td></tr>
           </tbody>
         </table>
