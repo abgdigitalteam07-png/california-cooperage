@@ -12,6 +12,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
+  <!-- Start of HubSpot Embed Code -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/358916.js"></script>
+  <!-- End of HubSpot Embed Code -->
   <title>California Cooperage — California's Original Hot Tub Since 1972</title>
   <link rel="icon" type="image/png" sizes="32x32" href="cc-assets/california-cooperage-icon-color.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="cc-assets/california-cooperage-icon-color.png" />
@@ -1616,13 +1619,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <img src="cc-assets/california-cooperage-logo-color.png" alt="California Cooperage" style="height:44px;width:auto;display:block;" />
     </div>
     <ul class="nav-links" role="list">
-      <li><a onclick="showPage('home')" class="active" data-page="home" tabindex="0" role="button">Home</a></li>
-      <li><a onclick="showPage('cr1')" data-page="cr1" tabindex="0" role="button">CR1</a></li>
-      <li><a onclick="showPage('cr2')" data-page="cr2" tabindex="0" role="button">CR2</a></li>
-      <li><a onclick="showPage('cr3')" data-page="cr3" tabindex="0" role="button">CR3</a></li>
-      <li><a onclick="showPage('warranty')" data-page="warranty" tabindex="0" role="button">Warranty &amp; Docs</a></li>
+      <li><a href="/" onclick="event.preventDefault(); showPage('home');" class="active" data-page="home" tabindex="0">Home</a></li>
+      <li><a href="/CR1" onclick="event.preventDefault(); showPage('cr1');" data-page="cr1" tabindex="0">CR1</a></li>
+      <li><a href="/CR2" onclick="event.preventDefault(); showPage('cr2');" data-page="cr2" tabindex="0">CR2</a></li>
+      <li><a href="/CR3" onclick="event.preventDefault(); showPage('cr3');" data-page="cr3" tabindex="0">CR3</a></li>
+      <li><a href="/warranty" onclick="event.preventDefault(); showPage('warranty');" data-page="warranty" tabindex="0">Warranty &amp; Docs</a></li>
     </ul>
-    <a class="nav-links" style="display:flex"><a class="nav-cta" onclick="showPage('find-a-dealer')" tabindex="0" role="button" style="font-family:var(--font-head);font-weight:700;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;padding:9px 20px;border-radius:6px;background:var(--blue);color:var(--white);cursor:pointer;transition:background 0.2s;border:none;text-decoration:none;" onmouseover="this.style.background='var(--teal)'" onmouseout="this.style.background='var(--blue)'">Find a Dealer</a></a>
+    <a class="nav-links" style="display:flex"><a class="nav-cta" href="/find-a-dealer" onclick="event.preventDefault(); showPage('find-a-dealer');" tabindex="0" role="button" style="font-family:var(--font-head);font-weight:700;font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;padding:9px 20px;border-radius:6px;background:var(--blue);color:var(--white);cursor:pointer;transition:background 0.2s;border:none;text-decoration:none;" onmouseover="this.style.background='var(--teal)'" onmouseout="this.style.background='var(--blue)'">Find a Dealer</a></a>
   </div>
 </nav>
 
@@ -1720,7 +1723,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span class="chip">Rectangular</span>
               <span class="chip">14 Jets</span>
             </div>
-            <span class="text-link">Learn More →</span>
+            <a class="text-link" href="/CR1" onclick="event.preventDefault(); event.stopPropagation(); showPage('cr1');">Learn More →</a>
           </div>
         </article>
 
@@ -1738,7 +1741,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span class="chip">Square</span>
               <span class="chip">25 Jets</span>
             </div>
-            <span class="text-link">Learn More →</span>
+            <a class="text-link" href="/CR2" onclick="event.preventDefault(); event.stopPropagation(); showPage('cr2');">Learn More →</a>
           </div>
         </article>
 
@@ -1755,7 +1758,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <span class="chip">Round</span>
               <span class="chip">21 Jets</span>
             </div>
-            <span class="text-link">Learn More →</span>
+            <a class="text-link" href="/CR3" onclick="event.preventDefault(); event.stopPropagation(); showPage('cr3');">Learn More →</a>
           </div>
         </article>
 
@@ -2834,8 +2837,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      JAVASCRIPT
 ════════════════════════════════════════════════════════ -->
 <script>
-  // ── Page navigation ─────────────────────────────────────
-  function showPage(id) {
+  // ── URL routing helpers ─────────────────────────────────
+  var SLUG_BY_PAGE = {
+    'home':          '',
+    'cr1':           'CR1',
+    'cr2':           'CR2',
+    'cr3':           'CR3',
+    'warranty':      'warranty',
+    'find-a-dealer': 'find-a-dealer'
+  };
+  var PAGE_BY_SLUG_UPPER = (function () {
+    var m = {};
+    Object.keys(SLUG_BY_PAGE).forEach(function (id) {
+      m[SLUG_BY_PAGE[id].toUpperCase()] = id;
+    });
+    return m;
+  })();
+  var TITLE_BY_PAGE = {
+    'home':          'California Cooperage — California\'s Original Hot Tub Since 1972',
+    'cr1':           'CR1 — California Cooperage',
+    'cr2':           'CR2 — The Flagship — California Cooperage',
+    'cr3':           'CR3 — California Cooperage',
+    'warranty':      'Warranty & Docs — California Cooperage',
+    'find-a-dealer': 'Find a Dealer — California Cooperage'
+  };
+  function slugFor(pageId)  { return SLUG_BY_PAGE[pageId] != null ? SLUG_BY_PAGE[pageId] : ''; }
+  function titleFor(pageId) { return TITLE_BY_PAGE[pageId] || TITLE_BY_PAGE.home; }
+  function pathFor(pageId)  { var s = slugFor(pageId); return '/' + s; }
+  function pageIdFromPath(pathname) {
+    var seg = (pathname || '/').replace(/^\/+|\/+$/g, '').split('/')[0] || '';
+    return PAGE_BY_SLUG_UPPER[seg.toUpperCase()] || (seg === '' ? 'home' : null);
+  }
+
+  function fireAnalytics(pageId) {
+    var path  = pathFor(pageId);
+    var title = titleFor(pageId);
+    // Google Tag Manager
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'virtualPageview',
+      page: path,
+      pageTitle: title
+    });
+    // HubSpot
+    var _hsq = window._hsq = window._hsq || [];
+    _hsq.push(['setPath', path]);
+    _hsq.push(['trackPageView']);
+    // Keep document.title in sync so GTM/HubSpot capture the right title
+    if (document.title !== title) document.title = title;
+  }
+
+  // ── Internal DOM swap (used by both showPage and popstate) ──
+  function showPageInternal(id) {
     // Hide all pages
     document.querySelectorAll('.page').forEach(function(p) {
       p.classList.remove('active');
@@ -2854,7 +2907,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Fire analytics
+    fireAnalytics(id);
   }
+
+  // ── Page navigation ─────────────────────────────────────
+  function showPage(id) {
+    if (!SLUG_BY_PAGE.hasOwnProperty(id)) id = 'home';
+    showPageInternal(id);
+    // Push a new history entry so back/forward buttons work
+    var newPath = pathFor(id);
+    if (window.location.pathname !== newPath) {
+      history.pushState({ page: id }, '', newPath);
+    }
+  }
+
+  // ── Handle browser back/forward ────────────────────────
+  window.addEventListener('popstate', function (e) {
+    var id = (e.state && e.state.page)
+          || pageIdFromPath(window.location.pathname)
+          || 'home';
+    showPageInternal(id);
+  });
+
+  // ── Initial URL → page resolution ───────────────────────
+  (function initFromUrl() {
+    var id = pageIdFromPath(window.location.pathname) || 'home';
+    // Replace (not push) so we don't create a bogus history entry
+    history.replaceState({ page: id }, '', pathFor(id));
+    // Run once the DOM is parsed
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () { showPageInternal(id); });
+    } else {
+      showPageInternal(id);
+    }
+  })();
 
   // ── FAQ accordion ────────────────────────────────────────
   function toggleFaq(btn) {
