@@ -2837,6 +2837,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      JAVASCRIPT
 ════════════════════════════════════════════════════════ -->
 <script>
+  // ── UTM / tracking-param persistence ────────────────────
+  var TRACKING_KEYS = [
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+    'gclid',    // Google Ads click ID
+    'fbclid',   // Facebook click ID
+    'msclkid',  // Microsoft Ads click ID
+    'hsa_cam', 'hsa_grp', 'hsa_ad',  // HubSpot ad params
+    'ref', 'referrer'
+  ];
+  (function captureTracking() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var tracking = {};
+      TRACKING_KEYS.forEach(function (k) {
+        if (params.has(k)) tracking[k] = params.get(k);
+      });
+      if (Object.keys(tracking).length) {
+        sessionStorage.setItem('cc_tracking_params', JSON.stringify(tracking));
+      }
+    } catch (e) {}
+  })();
+  function getStoredTracking() {
+    try {
+      var raw = sessionStorage.getItem('cc_tracking_params');
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function getTrackingQueryString() {
+    var obj = getStoredTracking();
+    var keys = Object.keys(obj);
+    if (!keys.length) return '';
+    var qs = new URLSearchParams(obj).toString();
+    return qs ? '?' + qs : '';
+  }
+
   // ── URL routing helpers ─────────────────────────────────
   var SLUG_BY_PAGE = {
     'home':          '',
@@ -2863,23 +2898,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   };
   function slugFor(pageId)  { return SLUG_BY_PAGE[pageId] != null ? SLUG_BY_PAGE[pageId] : ''; }
   function titleFor(pageId) { return TITLE_BY_PAGE[pageId] || TITLE_BY_PAGE.home; }
-  function pathFor(pageId)  { var s = slugFor(pageId); return '/' + s; }
+  // pathFor returns the full path INCLUDING persisted tracking query string
+  function pathFor(pageId)  { return '/' + slugFor(pageId) + getTrackingQueryString(); }
   function pageIdFromPath(pathname) {
     var seg = (pathname || '/').replace(/^\/+|\/+$/g, '').split('/')[0] || '';
     return PAGE_BY_SLUG_UPPER[seg.toUpperCase()] || (seg === '' ? 'home' : null);
   }
 
   function fireAnalytics(pageId) {
-    var path  = pathFor(pageId);
-    var title = titleFor(pageId);
+    var path     = pathFor(pageId);
+    var title    = titleFor(pageId);
+    var tracking = getStoredTracking();
     // Google Tag Manager
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    var gtmEvent = {
       event: 'virtualPageview',
       page: path,
       pageTitle: title
-    });
-    // HubSpot
+    };
+    // Spread stored tracking params so GTM tags/triggers can read them
+    Object.keys(tracking).forEach(function (k) { gtmEvent[k] = tracking[k]; });
+    window.dataLayer.push(gtmEvent);
+    // HubSpot — setPath includes the query string so UTMs are captured per virtual pageview
     var _hsq = window._hsq = window._hsq || [];
     _hsq.push(['setPath', path]);
     _hsq.push(['trackPageView']);
@@ -2916,9 +2956,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function showPage(id) {
     if (!SLUG_BY_PAGE.hasOwnProperty(id)) id = 'home';
     showPageInternal(id);
-    // Push a new history entry so back/forward buttons work
+    // Push a new history entry so back/forward buttons work.
+    // Include persisted UTM/tracking query string so attribution is preserved across nav.
     var newPath = pathFor(id);
-    if (window.location.pathname !== newPath) {
+    var currentFull = window.location.pathname + window.location.search;
+    if (currentFull !== newPath) {
       history.pushState({ page: id }, '', newPath);
     }
   }
@@ -2934,7 +2976,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // ── Initial URL → page resolution ───────────────────────
   (function initFromUrl() {
     var id = pageIdFromPath(window.location.pathname) || 'home';
-    // Replace (not push) so we don't create a bogus history entry
+    // Replace (not push) so we don't create a bogus history entry.
+    // pathFor(id) includes the persisted tracking query string, preserving UTMs
+    // as the visitor navigates the SPA.
     history.replaceState({ page: id }, '', pathFor(id));
     // Run once the DOM is parsed
     if (document.readyState === 'loading') {
