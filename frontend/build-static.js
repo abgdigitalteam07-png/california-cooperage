@@ -303,7 +303,25 @@ function buildJsonLd(route, master) {
         '@type': 'PropertyValue',
         name: p.name,
         value: p.value
-      }))
+      })),
+      offers: {
+        '@type': 'Offer',
+        availability: 'https://schema.org/InStock',
+        priceCurrency: 'USD',
+        price: '0',
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'USD',
+          valueAddedTaxIncluded: false,
+          description: 'Contact an authorized California Cooperage dealer for current pricing.'
+        },
+        seller: {
+          '@type': 'Organization',
+          name: 'California Cooperage Authorized Dealer Network',
+          url: SITE + '/find-a-dealer'
+        },
+        url: SITE + '/find-a-dealer'
+      }
     });
 
     // BreadcrumbList schema

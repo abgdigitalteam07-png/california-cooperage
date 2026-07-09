@@ -1,0 +1,44 @@
+{
+  "summary": "Validated Product JSON-LD `offers` block on deployed California Cooperage static site. All 23 pytest checks passed (structure, priceSpecification, seller, canonical URLs on canonical host, non-product page absence, sitemap, 301 uppercase redirect).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_jsonld_offers.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "build-static.js line 311 emits price as string '0' — acceptable but Google's Rich Results Test sometimes prefers numeric 0; test accepts both.",
+    "Note: frontend/.env REACT_APP_BACKEND_URL points to https://california-cooperage.preview.emergentagent.com while the review_request used https://cba431d2-...preview.emergentagent.com — both currently serve identical content. Not a bug, just an observation."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_jsonld_offers.py"
+  ],
+  "success_rate": {
+    "backend": "100%",
+    "frontend": "N/A (backend-only testing requested)"
+  },
+  "test_credentials": "N/A",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Tests hit the preview host directly and parse every <script type=application/ld+json> block with json.loads. Product schema is only expected on /cr1, /cr2, /cr3. seller.url and offers.url point to the canonical https://californiacooperagehottubs.com/find-a-dealer host by design (JSON-LD SEO metadata should reference the canonical domain, not the preview one).",
+  "test_coverage_detail": {
+    "product_offers_present": "PASS on /cr1, /cr2, /cr3",
+    "offers_structure": "PASS — @type=Offer, availability=InStock, priceCurrency=USD, price=0, url=canonical/find-a-dealer",
+    "priceSpecification": "PASS — description matches 'Contact an authorized California Cooperage dealer for current pricing.'",
+    "seller": "PASS — Organization named 'California Cooperage Authorized Dealer Network' with canonical url",
+    "jsonld_parseability": "PASS — all JSON-LD blocks on product pages are valid JSON",
+    "coexistence": "PASS — Organization, BreadcrumbList, FAQPage still present on product pages",
+    "non_product_pages": "PASS — /, /warranty, /find-a-dealer contain NO Product schema",
+    "sitemap": "PASS — 200 OK, contains /cr1, /cr2, /cr3, /warranty, /find-a-dealer",
+    "uppercase_redirect": "PASS — /CR1 -> /cr1 with 301"
+  }
+}
