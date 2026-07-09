@@ -1,0 +1,23 @@
+{
+  "rewrites": [
+    { "source": "CR1", "destination": "/CR1/index.html" },
+    { "source": "CR2", "destination": "/CR2/index.html" },
+    { "source": "CR3", "destination": "/CR3/index.html" },
+    { "source": "warranty", "destination": "/warranty/index.html" },
+    { "source": "find-a-dealer", "destination": "/find-a-dealer/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "robots.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+      ]
+    }
+  ]
+}
