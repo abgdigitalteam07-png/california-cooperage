@@ -15,7 +15,10 @@ const path = require('path');
 
 const ROOT       = __dirname;
 const MASTER     = path.join(ROOT, 'index.html');
-const SITE       = 'https://californiacooperagehottubs.com';
+// Canonical site URL used for <link rel="canonical">, sitemap.xml, OG tags,
+// and JSON-LD structured data. Override via env for staging/preview builds;
+// production must publish canonicals at the real customer-facing domain.
+const SITE       = process.env.SITE_URL || 'https://californiacooperagehottubs.com';
 const LASTMOD    = new Date().toISOString().slice(0, 10);
 
 // ── Route definitions ─────────────────────────────────────────
