@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node build-static.js",
     "prestart": "node build-static.js",
-    "start": "serve . -l tcp://0.0.0.0:3000 --no-clipboard"
+    "start": "node server.js"
   },
   "dependencies": {
     "serve": "14.2.4"

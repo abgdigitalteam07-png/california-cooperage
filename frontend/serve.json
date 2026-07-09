@@ -1,8 +1,8 @@
 {
   "rewrites": [
-    { "source": "CR1", "destination": "/CR1/index.html" },
-    { "source": "CR2", "destination": "/CR2/index.html" },
-    { "source": "CR3", "destination": "/CR3/index.html" },
+    { "source": "cr1", "destination": "/cr1/index.html" },
+    { "source": "cr2", "destination": "/cr2/index.html" },
+    { "source": "cr3", "destination": "/cr3/index.html" },
     { "source": "warranty", "destination": "/warranty/index.html" },
     { "source": "find-a-dealer", "destination": "/find-a-dealer/index.html" }
   ],

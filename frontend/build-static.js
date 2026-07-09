@@ -35,34 +35,82 @@ const ROUTES = [
   },
   {
     id: 'cr1',
-    slug: 'CR1',
+    slug: 'cr1',
     pageDivId: 'page-cr1',
-    outPath: path.join('CR1', 'index.html'),
+    outPath: path.join('cr1', 'index.html'),
     title: 'CR1 Hot Tub — 5-Person Rectangular Spa | California Cooperage',
     description:
       'The CR1 is a compact 5-person rectangular hot tub at 69" × 60" × 30" with 14 jets, Balboa controls, 3 kW heater, and full-foam insulation. Fits standard decks and patios.',
+    heroImage: 'cc-assets/cr1-hero-lifestyle.jpg',
+    product: {
+      name: 'CR1 Hot Tub',
+      model: 'CR1',
+      properties: [
+        { name: 'Seating Capacity', value: '5 Persons' },
+        { name: 'Shape',            value: 'Rectangular' },
+        { name: 'Dimensions',       value: '69" × 60" × 30"' },
+        { name: 'Total Jets',       value: '14' },
+        { name: 'Heater',           value: '3 kW' },
+        { name: 'Control System',   value: 'Balboa' },
+        { name: 'Insulation',       value: 'Full Foam' },
+        { name: 'Dry Weight',       value: '~309 lbs' },
+        { name: 'Filled Weight',    value: '~1,720 lbs' }
+      ]
+    },
     priority: '0.9',
     changefreq: 'monthly'
   },
   {
     id: 'cr2',
-    slug: 'CR2',
+    slug: 'cr2',
     pageDivId: 'page-cr2',
-    outPath: path.join('CR2', 'index.html'),
+    outPath: path.join('cr2', 'index.html'),
     title: 'CR2 Hot Tub — 7-Person Flagship Square Spa | California Cooperage',
     description:
       'The CR2 is our 7-person flagship square hot tub at 81" × 81" × 32". 25 jets, 2 pillows, water diverter, Balboa controls — the spa that owns the backyard.',
+    heroImage: 'cc-assets/cr2-lifestyle-family.jpg',
+    product: {
+      name: 'CR2 Hot Tub',
+      model: 'CR2',
+      properties: [
+        { name: 'Seating Capacity', value: '7 Persons' },
+        { name: 'Shape',            value: 'Square' },
+        { name: 'Dimensions',       value: '81" × 81" × 32"' },
+        { name: 'Total Jets',       value: '25' },
+        { name: 'Heater',           value: '3 kW' },
+        { name: 'Control System',   value: 'Balboa' },
+        { name: 'Insulation',       value: 'Full Foam' },
+        { name: 'Dry Weight',       value: '~441 lbs' },
+        { name: 'Filled Weight',    value: '~2,426 lbs' }
+      ]
+    },
     priority: '0.9',
     changefreq: 'monthly'
   },
   {
     id: 'cr3',
-    slug: 'CR3',
+    slug: 'cr3',
     pageDivId: 'page-cr3',
-    outPath: path.join('CR3', 'index.html'),
+    outPath: path.join('cr3', 'index.html'),
     title: 'CR3 Hot Tub — 6-Person Round Spa | California Cooperage',
     description:
       'The CR3 is a 6-person round hot tub at 80" × 80" × 32". 21 perimeter jets, Balboa controls, full-foam insulation — no bad seat in the house.',
+    heroImage: 'cc-assets/cr3-hero-lifestyle.jpg',
+    product: {
+      name: 'CR3 Hot Tub',
+      model: 'CR3',
+      properties: [
+        { name: 'Seating Capacity', value: '6 Persons' },
+        { name: 'Shape',            value: 'Round' },
+        { name: 'Dimensions',       value: '80" × 80" × 32"' },
+        { name: 'Total Jets',       value: '21' },
+        { name: 'Heater',           value: '3 kW' },
+        { name: 'Control System',   value: 'Balboa' },
+        { name: 'Insulation',       value: 'Full Foam' },
+        { name: 'Dry Weight',       value: '~529 lbs' },
+        { name: 'Filled Weight',    value: '~2,293 lbs' }
+      ]
+    },
     priority: '0.9',
     changefreq: 'monthly'
   },
@@ -143,6 +191,17 @@ function renderForRoute(master, route) {
   html = html.replace(/\n\s*<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, '');
   html = html.replace(/<title>/i, ogTags + '\n  <title>');
 
+  // 4b. JSON-LD structured data
+  const jsonLdBlocks = buildJsonLd(route, master);
+  // Strip any existing JSON-LD blocks first (idempotent regen)
+  html = html.replace(/\n\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, '');
+  if (jsonLdBlocks.length) {
+    const jsonLdMarkup = jsonLdBlocks
+      .map(obj => `<script type="application/ld+json">${JSON.stringify(obj, null, 2)}</script>`)
+      .join('\n  ');
+    html = html.replace(/<title>/i, jsonLdMarkup + '\n  <title>');
+  }
+
   // 5. Flip .page.active to the correct section for this route.
   // Master markup is `<div id="page-XYZ" class="page[ active]">` (id before class).
   // First, strip .active from every .page div.
@@ -172,6 +231,122 @@ function escapeAttr(str) {
 }
 function escapeRegex(str) {
   return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ── FAQ extraction ────────────────────────────────────────────
+// Extracts { question, answer } pairs from the .page div of the given route.
+function extractFaqs(master, pageDivId) {
+  // Find the page div in the master and grab its inner HTML up to the next page div
+  const startRe = new RegExp(`<div\\s+id="${escapeRegex(pageDivId)}"\\s+class="page[^"]*">`, 'i');
+  const startMatch = startRe.exec(master);
+  if (!startMatch) return [];
+  const startIdx = startMatch.index + startMatch[0].length;
+  // Slice until the next page opener OR end of file
+  const nextPageRe = /<div\s+id="page-[a-z0-9-]+"\s+class="page[^"]*">/i;
+  nextPageRe.lastIndex = startIdx;
+  const rest = master.slice(startIdx);
+  const nextMatch = nextPageRe.exec(rest);
+  const scope = nextMatch ? rest.slice(0, nextMatch.index) : rest;
+
+  const faqs = [];
+  // Match each faq-item: question is text before <span class="faq-icon", answer is inside <div class="faq-answer"[optional attrs]>...</div>
+  const itemRe = /<div class="faq-item">[\s\S]*?<button class="faq-question"[^>]*>([\s\S]*?)<span class="faq-icon"[\s\S]*?<div class="faq-answer"[^>]*>([\s\S]*?)<\/div>/gi;
+  let m;
+  while ((m = itemRe.exec(scope)) !== null) {
+    const question = stripTags(m[1]).replace(/\s+/g, ' ').trim();
+    const answer   = stripTags(m[2]).replace(/\s+/g, ' ').trim();
+    if (question && answer) faqs.push({ question, answer });
+  }
+  return faqs;
+}
+function stripTags(s) { return String(s).replace(/<[^>]+>/g, ''); }
+
+// ── JSON-LD blocks per route ──────────────────────────────────
+function buildJsonLd(route, master) {
+  const blocks = [];
+
+  // Organization — on every page
+  blocks.push({
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'California Cooperage',
+    url: SITE,
+    logo: SITE + '/cc-assets/california-cooperage-logo-color.png',
+    foundingDate: '1972',
+    foundingLocation: {
+      '@type': 'Place',
+      name: 'Sonoma, California'
+    },
+    description: "California's original hot tub brand since 1972. Rotomold construction, Balboa controls, full-foam insulation.",
+    sameAs: [
+      'https://www.maaxsaunas.com/',
+      'https://maaxchillers.com/'
+    ]
+  });
+
+  const isProduct = route.id === 'cr1' || route.id === 'cr2' || route.id === 'cr3';
+  if (isProduct && route.product) {
+    // Product schema
+    blocks.push({
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: route.product.name,
+      image: SITE + '/' + route.heroImage,
+      description: route.description,
+      brand: {
+        '@type': 'Brand',
+        name: 'California Cooperage'
+      },
+      model: route.product.model,
+      category: 'Hot Tub',
+      additionalProperty: route.product.properties.map(p => ({
+        '@type': 'PropertyValue',
+        name: p.name,
+        value: p.value
+      }))
+    });
+
+    // BreadcrumbList schema
+    blocks.push({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: SITE + '/'
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: route.product.model,
+          item: SITE + '/' + route.slug
+        }
+      ]
+    });
+  }
+
+  // FAQPage — on home + cr1/cr2/cr3
+  if (route.id === 'home' || isProduct) {
+    const faqs = extractFaqs(master, route.pageDivId);
+    if (faqs.length) {
+      blocks.push({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: faqs.map(f => ({
+          '@type': 'Question',
+          name: f.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: f.answer
+          }
+        }))
+      });
+    }
+  }
+
+  return blocks;
 }
 
 // ── Emit HTML files ────────────────────────────────────────────
