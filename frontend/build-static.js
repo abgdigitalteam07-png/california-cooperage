@@ -402,4 +402,33 @@ const sitemap = [
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
 console.log('[build-static] wrote sitemap.xml (' + ROUTES.length + ' urls)');
 
-console.log('[build-static] done —', written, 'route file(s) + sitemap.xml');
+// ── Emit _redirects (Cloudflare Pages / Netlify format) ───────
+// Production is served by a static CDN (Cloudflare Pages), so the Node
+// server.js redirect logic never runs. This file replicates that logic at
+// the CDN edge:
+//   1. Force uppercase product slugs → lowercase with 301
+//   2. Explicitly rewrite extensionless routes to their pre-rendered
+//      /<slug>/index.html file. This MUST come before any SPA catch-all
+//      the platform might inject, otherwise /cr1 falls through to
+//      /index.html and users see the home page instead of the product.
+const redirectLines = [];
+// 1. Case-sensitive uppercase → lowercase 301s (must come first)
+for (const route of ROUTES) {
+  if (!route.slug) continue;
+  const upper = route.slug.toUpperCase();
+  if (upper !== route.slug) {
+    redirectLines.push(`/${upper}  /${route.slug}  301!`);
+    redirectLines.push(`/${upper}/  /${route.slug}  301!`);
+  }
+}
+// 2. Explicit rewrites: /cr1 → /cr1/index.html (200), same for trailing slash
+for (const route of ROUTES) {
+  if (!route.slug) continue;
+  redirectLines.push(`/${route.slug}  /${route.slug}/index.html  200`);
+  redirectLines.push(`/${route.slug}/  /${route.slug}/index.html  200`);
+}
+const redirectsFile = redirectLines.join('\n') + '\n';
+fs.writeFileSync(path.join(ROOT, '_redirects'), redirectsFile, 'utf8');
+console.log('[build-static] wrote _redirects (' + redirectLines.length + ' rules)');
+
+console.log('[build-static] done —', written, 'route file(s) + sitemap.xml + _redirects');
