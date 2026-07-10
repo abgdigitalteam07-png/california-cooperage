@@ -431,4 +431,42 @@ const redirectsFile = redirectLines.join('\n') + '\n';
 fs.writeFileSync(path.join(ROOT, '_redirects'), redirectsFile, 'utf8');
 console.log('[build-static] wrote _redirects (' + redirectLines.length + ' rules)');
 
-console.log('[build-static] done —', written, 'route file(s) + sitemap.xml + _redirects');
+// ── Emit _headers (Cloudflare Pages / Netlify format) ─────────
+// Cache policy:
+//   /cc-assets/*   → 1 year, immutable (images, WebP, .glb 3D models — content-addressed by filename)
+//   HTML routes    → no-cache, must-revalidate (so redeploys propagate immediately)
+//   sitemap/robots → short cache (1 hour) so search engines re-fetch reasonably often
+const headersFile = [
+  '# Long-cache static assets (fingerprinted / rarely-changed)',
+  '/cc-assets/*',
+  '  Cache-Control: public, max-age=31536000, immutable',
+  '',
+  '# HTML — always revalidate so content edits go live on next request after redeploy',
+  '/*.html',
+  '  Cache-Control: public, max-age=0, must-revalidate',
+  '',
+  '/',
+  '  Cache-Control: public, max-age=0, must-revalidate',
+  '',
+  ...ROUTES.filter(r => r.slug).flatMap(r => [
+    `/${r.slug}`,
+    '  Cache-Control: public, max-age=0, must-revalidate',
+    '',
+    `/${r.slug}/`,
+    '  Cache-Control: public, max-age=0, must-revalidate',
+    ''
+  ]),
+  '# SEO discovery files — short cache so crawlers pick up updates',
+  '/sitemap.xml',
+  '  Cache-Control: public, max-age=3600, must-revalidate',
+  '  Content-Type: application/xml; charset=utf-8',
+  '',
+  '/robots.txt',
+  '  Cache-Control: public, max-age=3600, must-revalidate',
+  '  Content-Type: text/plain; charset=utf-8',
+  ''
+].join('\n');
+fs.writeFileSync(path.join(ROOT, '_headers'), headersFile, 'utf8');
+console.log('[build-static] wrote _headers');
+
+console.log('[build-static] done —', written, 'route file(s) + sitemap.xml + _redirects + _headers');

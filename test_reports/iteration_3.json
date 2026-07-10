@@ -1,0 +1,59 @@
+{
+  "summary": "Validated the new _headers file emitted by build-static.js for Cloudflare Pages CDN cache policy. Wrote /app/backend/tests/test_headers_file.py (32 new checks: syntax, per-block Cache-Control values, Content-Type on sitemap/robots, expected 15 blocks). Also ran the previous 16-check _redirects regression suite. All 48 tests pass. Preview host spot-check on /cr1 confirms title 'CR1 Hot Tub — 5-Person Rectangular Spa | California Cooperage' and Product offers JSON-LD still present.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_headers_file.py",
+    "/app/backend/tests/test_redirects_file.py",
+    "/app/backend/tests/test_jsonld_offers.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "User must redeploy /app/frontend/_headers + /app/frontend/_redirects to Cloudflare Pages for the production cache policy to take effect (out-of-environment step)."
+  ],
+  "critical_code_review_comments": [
+    "build-static.js _headers emitter correctly follows Cloudflare Pages spec — path lines start with /, header lines indented with exactly 2 spaces, blank lines separate blocks, comments are top-of-block only.",
+    "Emitter is ROUTES-derived: every route with a slug automatically gets both /<slug> and /<slug>/ blocks — so future new slugs will get cache policy for free (same DRY pattern as _redirects).",
+    "One minor style observation (not a bug): the /*.html glob would in theory cover /cr1/index.html etc., so the per-slug short-cache blocks are strictly redundant with /*.html. However, Cloudflare Pages evaluates URL patterns against the request URL (which is /cr1, NOT /cr1/index.html) — so /*.html would NOT match /cr1. The extensionless per-slug blocks are therefore correct and necessary.",
+    "Long-cache immutable is applied only to /cc-assets/*, correctly scoped. Content-Type on /sitemap.xml and /robots.txt is correctly set with explicit charset=utf-8.",
+    "Note: production URL (https://californiacooperagehottubs.com) cannot be tested from this environment — verification of the actual CDN cache-control response headers requires the user to redeploy and probe the production host."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_headers_file.py"
+  ],
+  "success_rate": {
+    "backend": "100% (48/48 pytest checks passing — 32 new _headers + 16 _redirects regression)",
+    "frontend": "N/A (backend-only testing requested)"
+  },
+  "test_credentials": "N/A",
+  "seed_data_creation": "Ran `node build-static.js` in /app/frontend which produced /app/frontend/_headers (15 blocks), /app/frontend/_redirects (20 rules), sitemap.xml (6 urls), and 6 pre-rendered HTML files.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "test_headers_file.py auto-runs `node build-static.js` at module scope, then filesystem-parses /app/frontend/_headers into blocks (path + headers dict). It cross-checks each expected block's Cache-Control + Content-Type against the spec. Also runs regression against _redirects (still 20 rules, 301 before 200) and prerendered HTML offers block. test_redirects_file.py already existed from iteration_2. Both files combined form the regression suite going forward.",
+  "test_coverage_detail": {
+    "headers_file_exists": "PASS",
+    "cloudflare_syntax_paths_start_with_slash": "PASS",
+    "header_lines_exactly_2_space_indent_no_tabs": "PASS",
+    "blocks_separated_by_blank_lines": "PASS",
+    "cc_assets_long_cache_immutable": "PASS (public, max-age=31536000, immutable)",
+    "html_glob_short_cache": "PASS (public, max-age=0, must-revalidate)",
+    "root_slash_short_cache": "PASS",
+    "per_slug_no_trailing_slash_short_cache": "PASS on cr1, cr2, cr3, warranty, find-a-dealer",
+    "per_slug_with_trailing_slash_short_cache": "PASS on cr1/, cr2/, cr3/, warranty/, find-a-dealer/",
+    "sitemap_cache_control_and_content_type": "PASS (max-age=3600, application/xml; charset=utf-8)",
+    "robots_cache_control_and_content_type": "PASS (max-age=3600, text/plain; charset=utf-8)",
+    "expected_15_blocks_total": "PASS",
+    "regression_redirects_20_rules": "PASS",
+    "regression_redirects_301_before_200": "PASS",
+    "regression_prerendered_html_still_has_offers": "PASS on /cr1, /cr2, /cr3",
+    "regression_sitemap_6_urls": "PASS",
+    "preview_spot_check_cr1": "PASS — title contains 'CR1 Hot Tub' and offers JSON-LD present"
+  }
+}

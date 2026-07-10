@@ -1,0 +1,49 @@
+# Long-cache static assets (fingerprinted / rarely-changed)
+/cc-assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML — always revalidate so content edits go live on next request after redeploy
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/cr1
+  Cache-Control: public, max-age=0, must-revalidate
+
+/cr1/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/cr2
+  Cache-Control: public, max-age=0, must-revalidate
+
+/cr2/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/cr3
+  Cache-Control: public, max-age=0, must-revalidate
+
+/cr3/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/warranty
+  Cache-Control: public, max-age=0, must-revalidate
+
+/warranty/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/find-a-dealer
+  Cache-Control: public, max-age=0, must-revalidate
+
+/find-a-dealer/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# SEO discovery files — short cache so crawlers pick up updates
+/sitemap.xml
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: application/xml; charset=utf-8
+
+/robots.txt
+  Cache-Control: public, max-age=3600, must-revalidate
+  Content-Type: text/plain; charset=utf-8
