@@ -33,6 +33,7 @@ Host a static HTML prototype (`california-cooperage-prototype.html` + `cc-assets
 - Lowercase URL enforcement (`/CR1` → 301 → `/cr1`)
 - JSON-LD structured data: Organization, Product, BreadcrumbList, FAQPage
 - **[2026-02] Product `offers` block** — added PriceOnRequest semantics (Offer + PriceSpecification + seller) on `/cr1`, `/cr2`, `/cr3`. Fixes Google Rich Results Test validation. Verified by testing agent (23/23 checks pass).
+- **[2026-02] Cloudflare Pages `_redirects` file** — build-static.js now emits `/app/frontend/_redirects` (20 rules) so that production Cloudflare Pages CDN can (a) 301 uppercase product slugs to lowercase and (b) explicitly serve `/cr1`, `/cr2`, `/cr3`, `/warranty`, `/find-a-dealer` from their `<slug>/index.html` pre-render (previously fell through to home shell via SPA fallback, hiding the offers block). 301 rules ordered above 200 rewrites per Cloudflare first-match-wins. Verified by testing agent (39/39 checks pass, including regression suite).
 
 ## Backlog (P1/P2)
 - P1: HubSpot dashboard-side UTM hidden fields (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`) — requires user action in HubSpot UI (agent already writes UTMs into the form via `sessionStorage`)
