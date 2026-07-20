@@ -1,0 +1,21 @@
+{
+  "summary": "PID sheet URL fix fully verified. All 51 tests pass: old broken fragments (info-andcontent) and old version numbers (v1782931775/777/780) are gone from all 6 pre-rendered files; new URLs (v1784556231/219/207 + info-and-content path) are exact and in-order in root index.html and present in all CR1/CR2/CR3 pre-rendered files; all three Cloudinary PDFs return HTTP 200 with application/pdf content-type; preview URL serves the corrected hrefs on /cr1, /cr2, /cr3; regressions (JSON-LD offers, inches-first dimensions, rotomold FAQ answer, dual-voltage 120V/240V, _redirects=20 rules, _headers=15 blocks, sitemap=6 urls) all clean.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_pid_urls.py",
+    "/app/test_reports/pytest/pid_urls.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "No issues found. URL swap is clean, all pre-rendered outputs are in sync with source, and the Cloudinary assets are live and PDF-typed."
+  ],
+  "updated_files": ["/app/backend/tests/test_pid_urls.py"],
+  "success_rate": {"backend": "100% (51/51)", "frontend": "N/A (backend-only test)"},
+  "test_credentials": "N/A",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "test_pid_urls.py covers three product-page PID download hrefs. If versioned Cloudinary URLs are rotated again, only update the EXPECTED_URLS dict at the top of the file. Live Cloudinary checks add ~2s and preview route checks hit REACT_APP_BACKEND_URL — if the preview URL changes, override REACT_APP_BACKEND_URL env or edit the constant.",
+  "rca of the issue": "Original bug had two overlapping errors in the pid-download-btn href: (1) stale Cloudinary version numbers (v1782931775/777/780) causing 404s after asset re-upload, and (2) a path-segment typo 'websites-product-info-andcontent' missing the hyphen between 'and' and 'content'. Main agent replaced all three <a class=\"pid-download-btn\"> hrefs in /app/frontend/index.html (lines 2013, 2256, 2469) with the new v1784556231/219/207 URLs and correct 'info-and-content' segment, then re-ran node build-static.js to regenerate cr1/cr2/cr3 pre-rendered outputs. Verified live: all three PDFs now 200 OK from Cloudinary and served correctly on the preview URL."
+}
