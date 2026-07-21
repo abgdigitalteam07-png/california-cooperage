@@ -225,11 +225,11 @@ class TestRegressionAncillary:
         lines = [ln for ln in content.splitlines() if ln.strip()]
         assert len(lines) == 20, f"_redirects: expected 20 rules, got {len(lines)}"
 
-    def test_headers_15_blocks(self):
+    def test_headers_16_blocks(self):
         content = open(os.path.join(FRONTEND_DIR, "_headers"), encoding="utf-8").read()
         # Count path-directive lines (lines that start with '/') — one per header block
         path_lines = [ln for ln in content.splitlines() if ln.startswith("/")]
-        assert len(path_lines) == 15, f"_headers: expected 15 path directives, got {len(path_lines)}"
+        assert len(path_lines) == 16, f"_headers: expected 16 path directives, got {len(path_lines)}"
 
     def test_sitemap_six_urls(self):
         content = open(os.path.join(FRONTEND_DIR, "sitemap.xml"), encoding="utf-8").read()

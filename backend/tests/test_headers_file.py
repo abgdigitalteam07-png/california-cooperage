@@ -321,10 +321,11 @@ def test_expected_block_count(parsed_blocks):
       10 content slugs (5 slugs × with and without trailing slash)
       1  /sitemap.xml
       1  /robots.txt
-    Total: 15
+      1  /llms.txt
+    Total: 16
     """
-    assert len(parsed_blocks) == 15, (
-        f"Expected 15 blocks in _headers, got {len(parsed_blocks)}: "
+    assert len(parsed_blocks) == 16, (
+        f"Expected 16 blocks in _headers, got {len(parsed_blocks)}: "
         f"{[b['path'] for b in parsed_blocks]}"
     )
 

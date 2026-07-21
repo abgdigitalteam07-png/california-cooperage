@@ -32,7 +32,7 @@ const ROUTES = [
     outPath: 'index.html',
     title: "California Cooperage — California's Original Hot Tub Since 1972",
     description:
-      "California Cooperage — the original American hot tub brand since 1972. Explore the CR1, CR2, and CR3 rotomold spas with Balboa controls, full-foam insulation, and California heritage. Plug-and-play simplicity, built to last.",
+      "Explore the CR1, CR2, and CR3 hot tubs from California Cooperage — America's original rotomold spa brand since 1972. Plug-and-play simple, built to last.",
     priority: '1.0',
     changefreq: 'weekly'
   },
@@ -43,7 +43,7 @@ const ROUTES = [
     outPath: path.join('cr1', 'index.html'),
     title: 'CR1 Hot Tub — 5-Person Rectangular Spa | California Cooperage',
     description:
-      'The CR1 is a compact 5-person rectangular hot tub at 69" × 60" × 30" with 14 jets, Balboa controls, 1 kW heater (120V) / 4 kW heater (240V), and full-foam insulation. Fits standard decks and patios.',
+      'The CR1 is a compact 5-person rectangular hot tub. 69" × 60" × 30", 14 jets, Balboa controls, 1kW (120V) or 4kW (240V), full-foam insulation.',
     heroImage: 'cc-assets/cr1-hero-lifestyle.jpg',
     product: {
       name: 'CR1 Hot Tub',
@@ -522,6 +522,10 @@ const headersFile = [
   '  Content-Type: application/xml; charset=utf-8',
   '',
   '/robots.txt',
+  '  Cache-Control: public, max-age=3600, must-revalidate',
+  '  Content-Type: text/plain; charset=utf-8',
+  '',
+  '/llms.txt',
   '  Cache-Control: public, max-age=3600, must-revalidate',
   '  Content-Type: text/plain; charset=utf-8',
   ''

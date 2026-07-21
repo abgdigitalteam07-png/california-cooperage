@@ -170,8 +170,11 @@ def test_master_cr1_prose_description_updated():
     matches = re.findall(r"'cr1':\s*'([^']+)'", content)
     assert matches, "no 'cr1': entries found in master"
     desc = max(matches, key=len)
-    assert SPEC_TABLE_STR in desc, (
-        f"CR1 prose description missing new heater string. Got: {desc}"
+    # After Bing-optimal SEO shortening, description carries dual-voltage
+    # heater info in condensed form: "1kW (120V) or 4kW (240V)" — the verbose
+    # spec-table string no longer fits the 120–160 char budget.
+    assert "1kW (120V)" in desc and "4kW (240V)" in desc, (
+        f"CR1 prose description missing dual-voltage heater info. Got: {desc}"
     )
     assert "3 kW" not in desc, "CR1 prose description still contains old '3 kW'"
 
@@ -179,10 +182,11 @@ def test_master_cr1_prose_description_updated():
 # ── (9) build-static.js CR1 route description + Heater properties ─
 def test_build_static_cr1_description_and_heater_props():
     content = read("build-static.js")
-    # CR1 description contains new heater string (prose form)
+    # CR1 description carries dual-voltage heater in condensed form after
+    # Bing-optimal SEO shortening.
     assert (
-        SPEC_TABLE_STR in content
-    ), "build-static.js CR1 description missing new heater prose string"
+        "1kW (120V) or 4kW (240V)" in content
+    ), "build-static.js CR1 description missing condensed dual-voltage heater string"
     # 3 Heater properties (one per CR) with JSON-LD value form
     heater_prop_pattern = re.compile(
         r"\{\s*name:\s*'Heater',\s*value:\s*'"
@@ -261,12 +265,13 @@ def test_redirects_has_20_rules():
     assert len(rules) == 20, f"Expected 20 _redirects rules, got {len(rules)}"
 
 
-def test_headers_has_15_blocks():
+def test_headers_has_16_blocks():
     content = read("_headers")
     blocks = [
         ln for ln in content.splitlines() if ln.startswith("/")
     ]
-    assert len(blocks) == 15, f"Expected 15 _headers path blocks, got {len(blocks)}"
+    # 15 prior blocks + 1 new /llms.txt block
+    assert len(blocks) == 16, f"Expected 16 _headers path blocks, got {len(blocks)}"
 
 
 # ── (14) REGRESSION: pre-rendered spec tables have new heater row ─

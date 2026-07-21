@@ -147,11 +147,12 @@ class TestRegression:
         ]
         assert len(rules) == 20, f"Expected 20 rules in _redirects, got {len(rules)}"
 
-    def test_headers_has_15_blocks(self):
+    def test_headers_has_16_blocks(self):
         with open(os.path.join(FRONTEND_DIR, "_headers"), "r", encoding="utf-8") as f:
             lines = f.read().splitlines()
         blocks = [ln for ln in lines if ln.startswith("/")]
-        assert len(blocks) == 15, f"Expected 15 header blocks, got {len(blocks)}"
+        # 15 prior blocks + 1 new /llms.txt block
+        assert len(blocks) == 16, f"Expected 16 header blocks, got {len(blocks)}"
 
 
 # ---------------------------------------------------------------------------
