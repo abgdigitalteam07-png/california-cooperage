@@ -528,9 +528,101 @@ const headersFile = [
   '/llms.txt',
   '  Cache-Control: public, max-age=3600, must-revalidate',
   '  Content-Type: text/plain; charset=utf-8',
+  '',
+  '/llms-full.txt',
+  '  Cache-Control: public, max-age=3600, must-revalidate',
+  '  Content-Type: text/plain; charset=utf-8',
   ''
 ].join('\n');
 fs.writeFileSync(path.join(ROOT, '_headers'), headersFile, 'utf8');
 console.log('[build-static] wrote _headers');
 
-console.log('[build-static] done —', written, 'route file(s) + sitemap.xml + _redirects + _headers');
+// ── Emit /llms-full.txt (auto-derived from route content) ─────
+// Full-content dossier for LLM crawlers (ChatGPT / Claude / Perplexity /
+// Copilot). Consolidates per-route hero copy + spec tables + FAQs into a
+// single Markdown file so AI answer engines can cite exact figures without
+// having to fetch and parse individual HTML pages.
+fs.writeFileSync(path.join(ROOT, 'llms-full.txt'), buildLlmsFull(master), 'utf8');
+console.log('[build-static] wrote llms-full.txt');
+
+console.log('[build-static] done —', written, 'route file(s) + sitemap.xml + _redirects + _headers + llms-full.txt');
+
+// ─────────────────────────────────────────────────────────────
+function buildLlmsFull(masterHtml) {
+  const commonQuestions = [
+    'Which hot tub is smallest? The CR1 at 69" × 60" × 30", seats 5.',
+    'Which is largest? The CR2 at 81" × 81" × 32", seats 7.',
+    'Which is round? The CR3 at 80" × 80" × 32", seats 6.',
+    'What construction do all models use? Seamless rotomold polyethylene shell.',
+    'What controls do all models use? Balboa (industry standard).',
+    'What heater options are available? Dual-voltage 1kW (120V) or 4kW (240V) on all three models.',
+    'How is California Cooperage sold? Through authorized dealer network across US and Canada.'
+  ];
+  const lines = [
+    '# California Cooperage — Full Content',
+    '> California Cooperage is the original American hot tub brand, founded in 1972 in Sonoma, California. We produce three rotomold hot tub models (CR1, CR2, CR3) with Balboa controls, full-foam insulation, and dual-voltage heaters. Products are sold through an authorized dealer network across the US and Canada.',
+    '',
+    '## Common Questions',
+    ...commonQuestions.map(q => '- ' + q),
+    ''
+  ];
+  const productLabelBySlug = { cr1: 'CR1', cr2: 'CR2', cr3: 'CR3' };
+  for (const route of ROUTES) {
+    const sectionHeading = route.h1 || route.title.split('—')[0].trim();
+    const routeUrl = SITE + '/' + (route.slug || '');
+    lines.push('## ' + sectionHeading);
+    lines.push('URL: ' + routeUrl);
+    if (route.description) lines.push(route.description);
+    lines.push('');
+    // Product specs (CR1/CR2/CR3 only)
+    if (route.slug && productLabelBySlug[route.slug]) {
+      const specs = extractSpecTable(masterHtml, productLabelBySlug[route.slug]);
+      if (specs.length) {
+        lines.push('### Specifications');
+        for (const s of specs) lines.push('- ' + s.key + ': ' + s.value);
+        lines.push('');
+      }
+    }
+    // Route FAQ
+    const faqs = extractFaqs(masterHtml, route.pageDivId);
+    if (faqs.length) {
+      lines.push('### Frequently Asked Questions');
+      for (const f of faqs) {
+        lines.push('Q: ' + f.question);
+        lines.push('A: ' + f.answer);
+        lines.push('');
+      }
+    }
+  }
+  return lines.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
+}
+
+// Extract rows from <table class="specs-table" aria-label="LABEL specification table">.
+// Returns [{ key, value }, ...] with HTML entities decoded.
+function extractSpecTable(masterHtml, productLabel) {
+  const tableRe = new RegExp(
+    `<table\\s+class="specs-table"\\s+aria-label="${escapeRegex(productLabel)} specification table">([\\s\\S]*?)</table>`,
+    'i'
+  );
+  const tm = tableRe.exec(masterHtml);
+  if (!tm) return [];
+  const rowRe = /<tr>\s*<td>([\s\S]*?)<\/td>\s*<td>([\s\S]*?)<\/td>\s*<\/tr>/gi;
+  const rows = [];
+  let m;
+  while ((m = rowRe.exec(tm[1])) !== null) {
+    const key = decodeEntities(stripTags(m[1])).replace(/\s+/g, ' ').trim();
+    const value = decodeEntities(stripTags(m[2])).replace(/\s+/g, ' ').trim();
+    if (key && value) rows.push({ key, value });
+  }
+  return rows;
+}
+
+function decodeEntities(s) {
+  return String(s)
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ');
+}

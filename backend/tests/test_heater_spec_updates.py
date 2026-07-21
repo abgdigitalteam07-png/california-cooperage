@@ -265,13 +265,13 @@ def test_redirects_has_20_rules():
     assert len(rules) == 20, f"Expected 20 _redirects rules, got {len(rules)}"
 
 
-def test_headers_has_16_blocks():
+def test_headers_has_17_blocks():
     content = read("_headers")
     blocks = [
         ln for ln in content.splitlines() if ln.startswith("/")
     ]
     # 15 prior blocks + 1 new /llms.txt block
-    assert len(blocks) == 16, f"Expected 16 _headers path blocks, got {len(blocks)}"
+    assert len(blocks) == 17, f"Expected 17 _headers path blocks, got {len(blocks)}"
 
 
 # ── (14) REGRESSION: pre-rendered spec tables have new heater row ─

@@ -192,9 +192,11 @@ class TestLlmsTxtFile:
         with open(fp, encoding="utf-8") as fh:
             return fh.read()
 
-    def test_file_size_around_1800(self, content):
+    def test_file_size_around_2400(self, content):
         size = len(content.encode("utf-8"))
-        assert 1500 <= size <= 2200, f"llms.txt size {size} bytes outside ~1800 range"
+        # llms.txt was ~1854 bytes before the Common Questions section was
+        # appended; post-fix expected around 2365 bytes.
+        assert 2100 <= size <= 2700, f"llms.txt size {size} bytes outside ~2400 range"
 
     def test_starts_with_h1(self, content):
         lines = content.splitlines()
@@ -262,10 +264,10 @@ class TestHeadersLlmsBlock:
             "_headers: /llms.txt block must have Cache-Control 1h + Content-Type text/plain; charset=utf-8"
         )
 
-    def test_headers_has_16_path_directives(self, headers):
+    def test_headers_has_17_path_directives(self, headers):
         path_lines = [ln for ln in headers.splitlines() if ln.startswith("/")]
-        assert len(path_lines) == 16, (
-            f"_headers: expected 16 path directives (llms.txt added to prior 15), got {len(path_lines)}"
+        assert len(path_lines) == 17, (
+            f"_headers: expected 17 path directives (llms-full.txt added to prior 16), got {len(path_lines)}"
         )
 
 
