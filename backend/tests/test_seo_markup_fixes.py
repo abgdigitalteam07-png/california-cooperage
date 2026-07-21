@@ -255,7 +255,11 @@ class TestLivePreview:
         assert BING_META in r.text, "preview /cr1 missing Bing meta"
         openers = re.findall(r"<h1(?:\s[^>]*)?>", r.text, flags=re.IGNORECASE)
         assert len(openers) == 1, f"preview /cr1: expected 1 <h1>, got {len(openers)}"
-        assert "<h1>CR1</h1>" in r.text
+        # H1 now carries the class="page-hero" marker introduced by the idempotent build
+        h1_match = re.search(r"<h1[^>]*>([\s\S]*?)</h1>", r.text, flags=re.IGNORECASE)
+        assert h1_match and h1_match.group(1).strip() == "CR1", (
+            f"preview /cr1: expected <h1>CR1</h1>, got {h1_match.group(0)[:120] if h1_match else 'none'!r}"
+        )
         assert "Learn More" not in r.text
 
     def test_preview_home_has_descriptive_anchors(self):

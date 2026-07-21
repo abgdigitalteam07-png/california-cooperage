@@ -220,20 +220,22 @@ function renderForRoute(master, route) {
   html = html.replace(activePattern, '$1 active$2');
 
   // 6. Enforce exactly one <h1> per pre-rendered page for SEO.
-  // The master contains one <h1> per page div (6 total). Since the pre-rendered
-  // HTML holds all 6 page divs, crawlers see 6 H1s per URL. Demote every H1
-  // OUTSIDE the active route's page div to H2. Preserves attributes, only
-  // rewrites the tag name.
-  html = demoteInactiveH1s(html, route.pageDivId);
+  // The master tags each per-page hero heading with class="page-hero".
+  // For the active route, ensure that hero is <h1>; for inactive ones,
+  // ensure it is <h2>. This is idempotent regardless of the master's
+  // current tag state, so the build is safe to re-run even when the
+  // home render writes back to /index.html.
+  html = normalizePageHeroHeadings(html, route.pageDivId);
 
   return html;
 }
 
-// Demote <h1> to <h2> inside every page div except the given active one.
-// Uses page-div opener positions (+ the <footer> boundary at the end) to
-// carve the master HTML into sections, then rewrites <h1[...]> and </h1>
-// to h2 inside inactive sections only.
-function demoteInactiveH1s(html, activePageDivId) {
+// Normalize <h1|h2 class="page-hero"> across the SPA's page divs.
+// The active page div's hero becomes <h1>; every other page div's hero
+// becomes <h2>. Self-healing (promotes h2→h1 or demotes h1→h2 as needed),
+// so repeated invocations of the build are safe even though the home route
+// overwrites the master file on disk.
+function normalizePageHeroHeadings(html, activePageDivId) {
   const openerRe = /<div\s+id="(page-[a-z0-9-]+)"\s+class="page[^"]*">/gi;
   const boundaries = [];
   let m;
@@ -241,7 +243,6 @@ function demoteInactiveH1s(html, activePageDivId) {
     boundaries.push({ id: m[1], start: m.index });
   }
   if (!boundaries.length) return html;
-  // End of the last page div is at the <footer> element (or end of string).
   const footerIdx = html.search(/<footer\b/i);
   const endIdx = footerIdx !== -1 ? footerIdx : html.length;
   for (let i = 0; i < boundaries.length; i++) {
@@ -249,26 +250,35 @@ function demoteInactiveH1s(html, activePageDivId) {
       ? boundaries[i + 1].start
       : endIdx;
   }
-  // Rebuild html: for each section, if it's not the active page div,
-  // rewrite <h1...> / </h1> to <h2...> / </h2>.
+  // Matches <h1 class="... page-hero ..."> or <h2 class="... page-hero ...">.
+  // The class="page-hero" attribute is REQUIRED (not optional) — only the
+  // stably-marked hero heading in each page div gets rewritten.
+  const heroRe = /<h([12])(\s+[^>]*?\bclass="[^"]*\bpage-hero\b[^"]*"[^>]*)>([\s\S]*?)<\/h\1>/gi;
   const parts = [];
   let cursor = 0;
   for (const b of boundaries) {
     if (b.start > cursor) parts.push(html.slice(cursor, b.start));
     const section = html.slice(b.start, b.end);
-    if (b.id === activePageDivId) {
-      parts.push(section);
-    } else {
-      parts.push(
-        section
-          .replace(/<h1(\s[^>]*)?>/gi, '<h2$1>')
-          .replace(/<\/h1>/gi, '</h2>')
-      );
-    }
+    const targetTag = b.id === activePageDivId ? 'h1' : 'h2';
+    parts.push(section.replace(heroRe, (_full, _lvl, attrs, inner) => {
+      return `<${targetTag}${attrs}>${inner}</${targetTag}>`;
+    }));
     cursor = b.end;
   }
   if (cursor < html.length) parts.push(html.slice(cursor));
   return parts.join('');
+}
+
+// Fail-fast post-build assertion: every pre-rendered file must have
+// exactly one <h1> tag. Prevents silent SEO corruption from any future
+// idempotency bug or master-file regression.
+function assertSingleH1(filePath, html) {
+  const count = (html.match(/<h1[\s>]/gi) || []).length;
+  if (count !== 1) {
+    throw new Error(
+      `[build-static] H1 invariant violated in ${filePath}: expected 1, found ${count}`
+    );
+  }
 }
 
 function escapeHtml(str) {
@@ -423,6 +433,7 @@ function buildJsonLd(route, master) {
 let written = 0;
 for (const route of ROUTES) {
   const html = renderForRoute(master, route);
+  assertSingleH1(route.outPath, html);
   const outFile = path.join(ROOT, route.outPath);
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   fs.writeFileSync(outFile, html, 'utf8');
