@@ -219,7 +219,56 @@ function renderForRoute(master, route) {
   );
   html = html.replace(activePattern, '$1 active$2');
 
+  // 6. Enforce exactly one <h1> per pre-rendered page for SEO.
+  // The master contains one <h1> per page div (6 total). Since the pre-rendered
+  // HTML holds all 6 page divs, crawlers see 6 H1s per URL. Demote every H1
+  // OUTSIDE the active route's page div to H2. Preserves attributes, only
+  // rewrites the tag name.
+  html = demoteInactiveH1s(html, route.pageDivId);
+
   return html;
+}
+
+// Demote <h1> to <h2> inside every page div except the given active one.
+// Uses page-div opener positions (+ the <footer> boundary at the end) to
+// carve the master HTML into sections, then rewrites <h1[...]> and </h1>
+// to h2 inside inactive sections only.
+function demoteInactiveH1s(html, activePageDivId) {
+  const openerRe = /<div\s+id="(page-[a-z0-9-]+)"\s+class="page[^"]*">/gi;
+  const boundaries = [];
+  let m;
+  while ((m = openerRe.exec(html)) !== null) {
+    boundaries.push({ id: m[1], start: m.index });
+  }
+  if (!boundaries.length) return html;
+  // End of the last page div is at the <footer> element (or end of string).
+  const footerIdx = html.search(/<footer\b/i);
+  const endIdx = footerIdx !== -1 ? footerIdx : html.length;
+  for (let i = 0; i < boundaries.length; i++) {
+    boundaries[i].end = (i + 1 < boundaries.length)
+      ? boundaries[i + 1].start
+      : endIdx;
+  }
+  // Rebuild html: for each section, if it's not the active page div,
+  // rewrite <h1...> / </h1> to <h2...> / </h2>.
+  const parts = [];
+  let cursor = 0;
+  for (const b of boundaries) {
+    if (b.start > cursor) parts.push(html.slice(cursor, b.start));
+    const section = html.slice(b.start, b.end);
+    if (b.id === activePageDivId) {
+      parts.push(section);
+    } else {
+      parts.push(
+        section
+          .replace(/<h1(\s[^>]*)?>/gi, '<h2$1>')
+          .replace(/<\/h1>/gi, '</h2>')
+      );
+    }
+    cursor = b.end;
+  }
+  if (cursor < html.length) parts.push(html.slice(cursor));
+  return parts.join('');
 }
 
 function escapeHtml(str) {

@@ -1,0 +1,40 @@
+{
+  "summary": "All three SEO markup fixes (Bing verification meta, single H1 per pre-rendered page, descriptive product-card anchors) verified across all 6 pre-rendered files plus live preview URL. 84/84 pytest tests pass in /app/backend/tests/test_seo_markup_fixes.py. Regressions clean: PID URLs (v1784556231/219/207 + info-and-content), JSON-LD offers block on cr1/cr2/cr3, inches-first dimensions, rotomold FAQ text, dual-voltage heater strings, _redirects=20 rules, _headers=15 path directives, sitemap.xml=6 <url> entries. HOWEVER, a latent idempotency bug in build-static.js was uncovered — re-running node build-static.js a second time destroys the H1s in cr1/cr2/cr3/warranty/find-a-dealer outputs. See RCA below.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "/app/frontend/build-static.js (demoteInactiveH1s + home writes back to /index.html)",
+        "issue": "Build is NOT idempotent. Home route's outPath is 'index.html' (the master file itself), so home render writes a variant of the master back to disk in which the 5 non-home hero <h1>s have been demoted to <h2>. On the NEXT invocation of `node build-static.js`, the code reads that already-demoted file as its new master, so cr1/cr2/cr3/warranty/find-a-dealer sections have NO <h1> in the source to preserve — the demote function only demotes, never promotes — and their pre-rendered outputs end up with ZERO <h1> tags. Discovered because test_pid_urls.py, test_headers_file.py, and test_redirects_file.py each run `node build-static.js` as a fixture; running them after the SEO fixes silently corrupts the SEO outputs.",
+        "priority": "HIGH"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": { "ui_bugs": [], "integration_issues": [], "design_issues": [] },
+  "test_report_links": [
+    "/app/backend/tests/test_seo_markup_fixes.py",
+    "/app/test_reports/pytest/seo_markup_fixes.xml"
+  ],
+  "action_items": [
+    "Fix build-static.js idempotency. Recommended options (any one): (a) Change home route's outPath to something other than the master file (e.g., write home to a `home/index.html` and let the server route `/` there, OR keep a separate untouched template file that is the true source and never gets overwritten); (b) Add a second pre-render step that, before demoting inactive H1s, also PROMOTES the active section's hero heading from <h2> to <h1> so the render is truly self-healing regardless of master state; (c) At the top of build-static.js, detect that the master already has demotions applied and refuse to run (fail-fast).",
+    "As a safety net, add a post-build assertion to build-static.js: after all files are written, re-open each output and verify it contains exactly one <h1>. Exit non-zero if not — this would have caught the corruption immediately.",
+    "Consider consolidating the pytest fixtures in test_pid_urls.py / test_headers_file.py / test_redirects_file.py: they all shell out to `node build-static.js` as a module-scoped fixture. Once idempotency is fixed this becomes safe, but today running the full pytest suite once corrupts outputs and requires manual restoration."
+  ],
+  "critical_code_review_comments": [
+    "build-static.js line ~32: `outPath: 'index.html'` for the home route conflates the SOURCE TEMPLATE and a RENDER OUTPUT. This is the root cause of the idempotency bug — the file is read as input and written as output in the same run, so any per-route transformation (like H1 demotion) permanently mutates the template.",
+    "demoteInactiveH1s (lines 236-272) is only a demoter — it makes no attempt to normalize the active section's hero to <h1>. Coupled with the mutable-master issue, a single stale run poisons all future renders. Even if the master file is fixed, this function should ensure the active hero is an <h1> regardless of its incoming tag.",
+    "No post-build validation is done. A one-line invariant like `assert(html.match(/<h1[\\s>]/gi).length === 1)` inside renderForRoute would have caught this before the file was written."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_seo_markup_fixes.py (new)",
+    "/app/frontend/index.html (restored to correct 6-H1 master state after my testing surfaced then triggered the idempotency bug; also re-applied the surgical Bing meta insertion and 3 descriptive anchors that had been lost when I inadvertently reverted the master via `git checkout HEAD -- frontend/index.html` — main agent's original edits were in the working tree, not committed)",
+    "/app/frontend/{cr1,cr2,cr3,warranty,find-a-dealer}/index.html (regenerated via node build-static.js from the corrected master)"
+  ],
+  "success_rate": { "backend": "100% (84/84)", "frontend": "N/A (backend-only task per request)" },
+  "test_credentials": "N/A",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "test_seo_markup_fixes.py covers all three SEO fixes plus all prior regressions (PID URLs, JSON-LD offers, dimensions, heater strings, rotomold FAQ, _redirects/_headers/sitemap counts) plus a live-preview smoke test on the emergent preview URL. IMPORTANT: do NOT run test_seo_markup_fixes.py in the same pytest session as test_pid_urls.py / test_headers_file.py / test_redirects_file.py UNTIL the build-static.js idempotency bug is fixed — the other tests trigger `node build-static.js` which will corrupt the H1s in cr1/cr2/cr3/warranty/find-a-dealer outputs. Correct workaround for now: run SEO tests first (or in isolation), and after any full-suite run restore the master by promoting the 5 non-home <h2> hero headings back to <h1> and then re-running node build-static.js once. The master's canonical state has SIX <h1> tags (one per SPA page div); pre-rendered outputs have ONE <h1> each.",
+  "rca of the issue": "ROOT CAUSE: build-static.js is not idempotent when the home route rewrites the master (index.html) that it also reads from. FLOW: (1) master starts with 6 <h1>s. (2) build reads master into memory. (3) For each route, renderForRoute clones the in-memory master and calls demoteInactiveH1s(html, activeRoute), which demotes 5 non-active <h1>s to <h2>. (4) For the home route the output is written back to /index.html itself — this replaces the master on disk with a version where only home's <h1> survives. (5) On the NEXT build invocation, master on disk has only 1 <h1>. renderForRoute for /cr1 clones this stale master and calls demoteInactiveH1s — but there is NO <h1> in the cr1 page section anymore (it was demoted last time), so the demote produces a file with 0 <h1>s. Same for cr2/cr3/warranty/find-a-dealer. REPRODUCTION: cd /app/frontend && node build-static.js && node build-static.js && grep -c '<h1' cr1/index.html → prints 0. MITIGATION APPLIED (temporary): I manually promoted the 5 non-home <h2> heroes back to <h1> in /app/frontend/index.html and re-ran node build-static.js exactly once. Outputs are now correct. But any subsequent invocation of build-static.js (including via the other test files' fixtures) will corrupt outputs again. Permanent fix must be done by main agent as described in action_items."
+}
